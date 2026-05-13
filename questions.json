@@ -1,0 +1,12 @@
+[
+  {
+    "q": "JavaScriptで非同期通信を行うための関数は？",
+    "a": ["fetch", "push", "get", "post"],
+    "correct": 0
+  },
+  {
+    "q": "GitHubでWebサイトを無料公開する機能の名前は？",
+    "a": ["GitHub Sites", "GitHub Web", "GitHub Pages", "GitHub Hosting"],
+    "correct": 2
+  }
+]
