@@ -14,7 +14,12 @@
     <div id="quiz-container">
         <h2 id="question">読み込み中...</h2>
         <div id="choices"></div>
+        <div id="explanation-container" style="display:none; margin-top:20px; padding:15px; background:#eef; border-radius:8px;">
+        <p id="result-text" style="font-weight:bold;"></p>
+        <p id="explanation-text"></p>
+        <button id="next-btn" onclick="nextQuestion()">次の問題へ</button>
     </div>
+</div>
     <script src="script.js"></script>
 </body>
 </html>

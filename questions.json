@@ -1,12 +1,191 @@
 [
   {
-    "q": "JavaScriptで非同期通信を行うための関数は？",
-    "a": ["fetch", "push", "get", "post"],
-    "correct": 0
+    "q": "第1問：日付の書式設定（和暦と曜日）<br>今日の日付が「2024/5/13」のとき、メッセージボックスに「令和6年05月13日(月)」と表示したい。**【 1 】**に入る適切な書式を答えなさい。<br><br>Sub Test1()<br>    MsgBox Format(Date, ”【 1 】”)<br>End Sub",
+    "a0": "yyyy年mm月dd日(aaa)",
+    "a1": "ggge年mm月dd日(aaaa)",
+    "a2": "ggge年mm月dd日(aaa)",
+    "a3": "ggg ee年mm月dd日",
+    "correct": "2",
+    "explanation": "Format関数で和暦を表示するには、年号を表す「ggg」と、和暦の年を表す「e」（1桁で表示）または「ee」（2桁固定）を組み合わせます。また、日本語の曜日を1文字で表示するには「aaa」を使用します（「aaaa」は「月曜日」になります）。"
   },
   {
-    "q": "GitHubでWebサイトを無料公開する機能の名前は？",
-    "a": ["GitHub Sites", "GitHub Web", "GitHub Pages", "GitHub Hosting"],
-    "correct": 2
+    "q": "第2問：InStr関数の構文規則<br>文字列の中から特定の文字を検索したい。次のうち、実行した際にコンパイルエラーになる記述はどれか。<br><br>Sub Test2()<br>    Dim pos As Long<br>    ' 以下のいずれかを実行<br>    pos = 【 1 】<br>    MsgBox pos<br>End Sub",
+    "a0": "InStr(1, ”ABC”, ”B”)",
+    "a1": "InStr(”ABC”, ”B”)",
+    "a2": "InStr(string1:=”ABC”, string2:=”B”)",
+    "a3": "InStr(2, ”ABC”, ”B”)",
+    "correct": "2",
+    "explanation": "InStr関数は非常に特殊で、名前付き引数（arg:=value）を使用することができません。これを使用するとコンパイルエラーが発生します。一方、検索開始位置を指定する引数は省略可能ですが、比較モード（compare）を指定する場合は開始位置も必ず指定する必要があります。"
+  },
+  {
+    "q": "第3問：負の数に対する整数処理<br>次のマクロを実行したとき、メッセージボックスに表示される数値として正しいものを答えなさい。<br><br>Sub Test3()<br>    MsgBox Fix(-99.2)<br>End Sub",
+    "a0": "-99",
+    "a1": "-100",
+    "a2": "99",
+    "a3": "100",
+    "correct": "0",
+    "explanation": "Fix関数は指定した数値の整数部分を返します。正の数の場合は Int 関数と同じ結果になりますが、負の数の場合は異なります。Fix は「その数値以上の最小の整数（0に近い方）」を返すため、-99.2 の場合は -99 となります。"
+  },
+  {
+    "q": "第4問：VBA独自の丸め処理（銀行型丸め）<br>次のマクロを実行したとき、変数 R に格納される数値として正しいものを答えなさい。<br><br>SubTest4()<br>    Dim R As Double<br>    R = Round(2.5)<br>End Sub",
+    "a0": "3",
+    "a1": "2",
+    "a2": "2.5",
+    "a3": "0",
+    "correct": "1",
+    "explanation": "ワークシート関数のROUNDは四捨五入ですが、VBAのRound関数は「銀行型丸め（最近接偶数への丸め）」偶数の方に丸められるため、2.5 は 2 になります（1.5 は 2 に、2.5 も 2 になります）。"
+  },
+  {
+    "q": "第5問：ワークシート関数の利用と日付検索<br>セルA1に日付が入っている。VLOOKUP関数を使ってB列の値を検索する際、日付を正しく検索するための最も確実な記述はどれか。<br><br>Sub Test5()<br>    Dim res As Variant<br>    res = WorksheetFunction.VLookup(【 1 】, Range(”A:B”), 2, 0)<br>End Sub",
+    "a0": "Cells(1, 1).Value",
+    "a1": "Cells(1, 1).Text",
+    "a2": "Cells(1, 1)",
+    "a3": "Cells(1, 1).Value2",
+    "correct": "2",
+    "explanation": "WorksheetFunction でVLOOKUPなどの検索系関数に日付を渡す場合、.Value プロパティを指定すると正しく検索されないことがあります。ソースによれば、**.Value を指定しない（Rangeオブジェクトそのものを渡す）**ことが、簡単で確実な方法とされています。"
+  },
+  {
+    "q": "第6問：Like演算子によるパターンマッチング<br>文字列が「a」で始まり「b」で終わる3文字で、真ん中の1文字が「数字」であるか判定したい。**【 1 】**に入る適切なパターンを答えなさい。<br><br>Sub Test6()<br>    If ”a1b” Like ”【 1 】” Then<br>        MsgBox ”一致しました”<br>    End If<br>End Sub",
+    "a0": "a*b",
+    "a1": "a?b",
+    "a2": "a#b",
+    "a3": "a[A-Z]b",
+    "correct": "2",
+    "explanation": "Like演算子において、「#」は任意の数字1文字（0-9）を表します。「*」は任意の数の文字、「?」は任意の1文字（数字に限らない）を表すため、数字1文字を特定する場合は「#」が適切です。"
+  },
+  {
+    "q": "第7問：関数と括弧()の記述ルール<br>メッセージボックスで「はい」「いいえ」を表示させ、ユーザーがどちらを押したかによって処理を分岐させたい。**【 1 】**に入る正しい記述はどれか。<br><br>Sub Test7()<br>    If 【 1 】 = vbYes Then<br>        MsgBox ”実行します”<br>    End If<br>End Sub",
+    "a0": "MsgBox ”続けますか？”, vbYesNo",
+    "a1": "MsgBox(”続けますか？”, vbYesNo)",
+    "a2": "MsgBox ”続けますか？”, vbYesNo = vbYes",
+    "a3": "Call MsgBox(”続けますか？”, vbYesNo)",
+    "correct": "1",
+    "explanation": "VBA関数において、その戻り値（実行結果）を If 文の判定や変数への代入に使用する場合、必ず引数を括弧 () で囲む必要があります。単にメッセージを表示するだけの（戻り値を使わない）場合は、括弧を付けずに記述します。"
+  },
+  {
+    "q": "第8問：文字列の置換と削除<br>変数 S に格納された「123-456」からハイフンを取り除き、「123456」という文字列を作成したい。**【 1 】**に入る適切な記述はどれか。<br><br>Sub Test8()<br>    Dim S As String<br>    S = ”123-456”<br>    S = 【 1 】<br>End Sub",
+    "a0": "Trim(S, ”-”)",
+    "a1": "Replace(S, ”-”, ””)",
+    "a2": "StrConv(S, ”-”, ””)",
+    "a3": "Mid(S, ”-”, ””)",
+    "correct": "1",
+    "explanation": "Replace関数は指定した文字列を別の文字列で置換します。置換先の文字列に ””（空文字） を指定することで、特定の文字を「削除」する処理として利用できます。Trim は両端のスペースのみを削除する関数です。"
+  },
+  {
+    "q": "第1問：大文字・小文字の変換<br>セルA1に入力されている「vba」という小文字を、定数 vbUpperCase を使って「VBA」に変換してメッセージボックスに表示したい。**【 1 】**に入る適切な関数はどれか。<br><br>Sub Test1()<br>    MsgBox 【 1 】(Range(”A1”), vbUpperCase)<br>End Sub",
+    "a0": "UCase",
+    "a1": "LCase",
+    "a2": "StrConv",
+    "a3": "Format",
+    "correct": "2",
+    "explanation": "StrConv関数は、第2引数に指定した定数（vbUpperCaseなど）に基づいて、文字列を大文字、小文字、全角、半角などに一括変換します,。UCase関数も大文字変換を行いますが、引数の構成が異なるため、このコードの形式には StrConv が適切です。"
+  },
+  {
+    "q": "第2問：特定の文字を消去する<br>セルA1に入力されている「090-1234-5678」から、すべてのハイフン「-」を削除して「09012345678」にしたい。**【 1 】**に入る適切な関数はどれか。<br><br>Sub Test2()<br>    Cells(1, 2) = 【 1 】(Cells(1, 1), ”-”, ””)<br>End Sub",
+    "a0": "Trim",
+    "a1": "InStr",
+    "a2": "Replace",
+    "a3": "Mid",
+    "correct": "2",
+    "explanation": "Replace関数は、指定された文字列の一部を別の文字列で置換する関数です。置換する文字列（第3引数）に ””（空文字）を指定することで、特定の文字を削除する処理を行うことができます。"
+  },
+  {
+    "q": "第3問：全角への変換<br>アルファベットの「ABC」を、全角文字の「ＡＢＣ」に変換して表示したい。**【 1 】**に入る適切な関数はどれか。<br><br>Sub Test3()<br>    MsgBox 【 1 】(”ABC”, vbWide)<br>End Sub",
+    "a0": "StrConv",
+    "a1": "UCase",
+    "a2": "Format",
+    "a3": "LCase",
+    "correct": "0",
+    "explanation": "StrConv関数の第2引数に定数 vbWide を指定することで、文字列内の半角文字（1バイト）を全角文字（2バイト）に変換できます,。"
+  },
+  {
+    "q": "第4問：文字数のカウント<br>変数 L に、文字列「マクロVBA」の文字数を格納したい。結果が「6」となる適切な関数はどれか。<br><br>Sub Test4()<br>    Dim L As Long<br>    L = 【 1 】(”マクロVBA”)<br>End Sub",
+    "a0": "LenB",
+    "a1": "Len",
+    "a2": "Count",
+    "a3": "InStr",
+    "correct": "1",
+    "explanation": "Len関数は、指定した文字列の文字数を表す値を返します。VBAでは全角文字も1文字として数えられるため、「マクロVBA」は6文字となります,。LenBはバイト数を返すため、この場合は異なる数値になります。"
+  },
+  {
+    "q": "第5問：日付データの作成<br>引数に「2025, 1, 1」と数値で指定して、2025年1月1日の日付データを変数 MyDate に代入したい。**【 1 】**に入る適切な関数はどれか。<br><br>Sub Test5()<br>    Dim MyDate As Date<br>    MyDate = 【 1 】(2025, 1, 1)<br>End Sub",
+    "a0": "DateValue",
+    "a1": "DateAdd",
+    "a2": "Format",
+    "a3": "DateSerial",
+    "correct": "3",
+    "explanation": "DateSerial関数は、引数に指定した年、月、日に対応する日付の値を返します。ワークシート関数の DATE と同様の役割を持ちます。"
+  },
+  {
+    "q": "第6問：指定期間後の日付<br>セルA1に「2021/9/10」が入っている。この「2ヶ月後」の日付（2021/11/10）を取得したい。**【 1 】**に入る適切な関数はどれか。<br><br>Sub Test6()<br>    Cells(1, 2) = 【 1 】(”m”, 2, Cells(1, 1))<br>End Sub",
+    "a0": "DateAdd",
+    "a1": "DateSerial",
+    "a2": "DateValue",
+    "a3": "DatePart",
+    "correct": "0",
+    "explanation": "DateAdd関数は、指定された時間間隔（”m”は月）を、指定した数（2）だけ加算した日付の値を返します,。"
+  },
+  {
+    "q": "第7問：日付の有効性判定<br>変数 Target に入っている「2024/2/30」のような文字列が、日付として認識できる正しい形式かどうかを判定したい。**【 1 】**に入る適切な関数はどれか。<br><br>Sub Test7()<br>    If 【 1 】(”2024/2/30”) = False Then<br>        MsgBox ”正しい日付ではありません”<br>    End If<br>End Sub",
+    "a0": "IsNumeric",
+    "a1": "IsEmpty",
+    "a2": "IsDate",
+    "a3": "CDate",
+    "correct": "2",
+    "explanation": "IsDate関数は、式を日付に変換できるかどうかを調べ、結果をブール型（True/False）で返します。存在しない「2月30日」などの場合は False を返します。"
+  },
+  {
+    "q": "第8問：時刻の書式設定<br>現在の時刻が「9時5分3秒」のとき、Format関数を使って「09:05:03」と常に2桁（24時間制）で表示させたい。第2引数に指定する適切な書式はどれか。<br><br>Sub Test8()<br>    MsgBox Format(Now, ”【 1 】”)<br>End Sub",
+    "a0": "h:m:s",
+    "a1": "hh:mm:ss",
+    "a2": "hh:nn:ss",
+    "a3": "h時n分s秒",
+    "correct": "2",
+    "explanation": "時刻の書式において、分を表すのは n または nn です。m や mm も、時間の指定である h の直後であれば分と解釈されますが、月（Month）との混同を避けるため、時刻指定では n を使用するのが推奨されます,。2桁固定にするには nn を使います。"
+  },
+  {
+    "q": "第9問：文字の位置を調べる<br>文字列「123aAbBcC」の中から、大文字の「A」が何文字目にあるかを数値で取得したい（結果は5）。**【 1 】**に入る適切な関数はどれか。<br><br>Sub Test9()<br>    MsgBox 【 1 】(”123aAbBcC”, ”A”)<br>End Sub",
+    "a0": "Replace",
+    "a1": "InStr",
+    "a2": "Mid",
+    "a3": "StrConv",
+    "correct": "1",
+    "explanation": "InStr関数は、ある文字列の中から指定した文字列を検索し、最初に見つかった文字位置を数値で返す関数です,。この問題では大文字の「A」を数えると5文字目にあたります。"
+  },
+  {
+    "q": "第10問：負の数の整数化<br>次のコードを実行したとき、メッセージボックスに表示される数値として正しいものはどれか。<br><br>Sub Test10()<br>    MsgBox Fix(-99.2)<br>End Sub",
+    "a0": "-99",
+    "a1": "-100",
+    "a2": "99",
+    "a3": "100",
+    "correct": "0",
+    "explanation": "Fix関数は指定した数値の整数部分を返します。負の数値の場合、その数値以上の最小の値を返す（0に近い方の整数を返す）ため、-99.2 は -99 となります,。"
+  },
+  {
+    "q": "第11問：戻り値を利用するMsgBox<br>ユーザーが「はい」か「いいえ」かを選択し、その結果を変数 A に格納したい。適切な記述はどれか。<br><br>Sub Test11()<br>    Dim A As Long<br>    A = 【 1 】<br>    If A = vbYes Then MsgBox ”実行します”<br>End Sub",
+    "a0": "MsgBox ”実行しますか？”, vbYesNo",
+    "a1": "MsgBox(”実行しますか？”, vbYesNo)",
+    "a2": "MsgBox ”実行しますか？”, vbYesNo = vbYes",
+    "a3": "Call MsgBox(”実行しますか？”, vbYesNo)",
+    "correct": "1",
+    "explanation": "VBA関数において、関数の実行結果（戻り値）を変数に代入して利用する場合は、必ず引数をカッコ () で囲む必要があります。"
+  },
+  {
+    "q": "第12問：ブックの別名保存<br>既存のブックを開き、それを別の名前で新しく保存したい。**【 1 】と【 2 】**に入る適切なメソッドの組み合わせはどれか。<br><br>Sub Test12()<br>    Workbooks.【 1 】 ”C:\\売上.xlsx”<br>    ActiveWorkbook.【 2 】 ”C:\\売上_コピー.xlsx”<br>End Sub",
+    "a0": "【1】Add 【2】Save",
+    "a1": "【1】Open 【2】SaveAs",
+    "a2": "【1】Add 【2】SaveAs",
+    "a3": "【1】Open 【2】Save",
+    "correct": "1",
+    "explanation": "既存のブックを開くには Openメソッド を使用します。また、開いているブックを別のファイル名を指定して新しく保存するには SaveAsメソッド を使用します（会話履歴より）。"
+  },
+  {
+    "q": "第13問：保存して閉じる<br>マクロ内で、現在の変更内容を保存してブックを閉じたい。**【 1 】**に入る適切な記述はどれか。<br><br>Sub Test13()<br>    ActiveWorkbook.【 1 】<br>End Sub",
+    "a0": "Close",
+    "a1": "Close False",
+    "a2": "Close True",
+    "a3": "SaveAs",
+    "correct": "2",
+    "explanation": "Closeメソッドにおいて、第1引数に True（または SaveChanges:=True）を指定すると、変更を保存してからファイルを閉じます（会話履歴より）。"
   }
 ]
