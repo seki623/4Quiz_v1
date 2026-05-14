@@ -9,67 +9,80 @@ fetch('questions.json')
         showQuestion();
     })
     .catch(error => {
-        console.error("データの読み込みに失敗しましたわ:", error);
-        document.getElementById("question").textContent = "データの読み込みに失敗しました。";
+        console.error("読み込みエラー:", error);
+        document.getElementById("question").textContent = "データの読み込みに失敗しましたわ。";
     });
 
 // 2. 問題を表示する
 function showQuestion() {
-    // 解説エリアを隠す
-    const expContainer = document.getElementById("explanation-container");
-    if (expContainer) expContainer.style.display = "none";
+    // 前回の解説を隠す
+    document.getElementById("explanation-container").style.display = "none";
 
     const data = quizData[currentIdx];
-    document.getElementById("question").textContent = data.q;
+    // innerHTMLにすることでスプシの <br> を有効化します
+    document.getElementById("question").innerHTML = data.q;
     
     const choicesDiv = document.getElementById("choices");
     choicesDiv.innerHTML = "";
 
-    // スプレッドシートの形式に合わせて a0, a1, a2, a3 を配列にまとめます
     const choices = [data.a0, data.a1, data.a2, data.a3];
 
     choices.forEach((choice, i) => {
         const btn = document.createElement("button");
-        btn.textContent = choice;
+        btn.innerHTML = choice; // 選択肢内の改行等にも対応
         btn.onclick = () => checkAnswer(i);
         choicesDiv.appendChild(btn);
     });
 }
 
-// 3. 正解判定と解説の表示
+// 3. 正解判定と視覚演出
 function checkAnswer(idx) {
     const data = quizData[currentIdx];
+    const buttons = document.querySelectorAll("#choices button");
     const expContainer = document.getElementById("explanation-container");
     const resultText = document.getElementById("result-text");
     const expText = document.getElementById("explanation-text");
 
-    // 全ての選択肢ボタンを無効化（解説中に何度も押せないようにします）
-    const buttons = document.querySelectorAll("#choices button");
+    // 全ボタンを無効化
     buttons.forEach(btn => btn.disabled = true);
 
-    // 正誤判定
-    if (idx === parseInt(data.correct)) {
+    const selectedButton = buttons[idx];
+    const correctIdx = parseInt(data.correct);
+
+    if (idx === correctIdx) {
+        // 正解の演出
+        selectedButton.style.backgroundColor = "#d4edda";
+        selectedButton.style.borderColor = "#28a745";
+        selectedButton.innerHTML = "⭕ " + selectedButton.innerHTML;
         resultText.textContent = "⭕ 正解ですわ！";
-        resultText.style.color = "#28a745"; // 清潔感のある緑色
+        resultText.style.color = "#28a745";
     } else {
+        // 不正解の演出
+        selectedButton.style.backgroundColor = "#f8d7da";
+        selectedButton.style.borderColor = "#dc3545";
+        selectedButton.innerHTML = "❌ " + selectedButton.innerHTML;
+        
+        // 正解のボタンも教えてあげる
+        buttons[correctIdx].style.backgroundColor = "#e7f3ff";
+        buttons[correctIdx].style.borderColor = "#007bff";
+        buttons[correctIdx].innerHTML = "💡 " + buttons[correctIdx].innerHTML;
+
         resultText.textContent = "❌ 不正解です...";
-        resultText.style.color = "#dc3545"; // 警告の赤色
+        resultText.style.color = "#dc3545";
     }
 
-    // 解説文を表示（JSONのexplanationキーを読み込みます）
-    expText.textContent = data.explanation;
+    // 解説を表示
+    expText.innerHTML = data.explanation;
     expContainer.style.display = "block"; 
 }
 
-// 4. 次の問題へ進む（「次の問題へ」ボタンから呼ばれます）
+// 4. 次の問題へ
 function nextQuestion() {
     currentIdx++;
-    
-    // 全問終了したら最初に戻る（または終了メッセージを出す）
     if (currentIdx < quizData.length) {
         showQuestion();
     } else {
-        alert("全問終了しましたわ！最初からやり直します。");
+        alert("全問終了しましたわ！最初に戻ります。");
         currentIdx = 0;
         showQuestion();
     }
