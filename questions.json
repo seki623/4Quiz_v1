@@ -187,5 +187,365 @@
     "a3": "SaveAs",
     "correct": "2",
     "explanation": "Closeメソッドにおいて、第1引数に True（または SaveChanges:=True）を指定すると、変更を保存してからファイルを閉じます（会話履歴より）。"
+  },
+  {
+    "q": "第1回. マクロとは？VBAとは？VBAでできること\\n問題1 VBAによる自動化の要点である「条件分岐」と「繰り返し処理」を組み合わせたい。このとき、【　1　】に入る一般的なステートメントの組み合わせを答えなさい。<br>' 条件により処理を切り替えつつ一定回数繰り返す\\n【　1　】 i = 1 To 10\\n    If Cells(i, 1) = \"完了\" Then\\n        ' 処理\\n    End If\\nNext i<br>",
+    "a0": "Select Case",
+    "a1": "For",
+    "a2": "Do While",
+    "a3": "If",
+    "correct": "2",
+    "explanation": "VBAによる自動化の大部分は、条件により分岐しつつ繰り返す、あるいは繰り返しつつ条件分岐するという「If文」と「For文」の組み合わせに集約されます。"
+  },
+  {
+    "q": "第2回. まずはマクロVBAを使う準備\\n問題1 Excelの画面にマクロ作成に必要なタブを表示させたい。【　1　】に入るタブ名を答えなさい。<br>「ファイル」→「オプション」→「リボンのユーザー設定」から\\n右側の【　1　】にチェックを入れる<br>",
+    "a0": "表示",
+    "a1": "データ",
+    "a2": "開発",
+    "a3": "アドイン",
+    "correct": "3",
+    "explanation": "マクロVBAを使うためには、まずリボンに「開発」タブを表示させる準備が必要です。"
+  },
+  {
+    "q": "第3回. マクロの記録\\n問題1 マクロの記録で記録されない処理を答えなさい。<br>' 以下のような【　1　】はマクロの記録では作成されない\\nIf Range(\"A1\") = \"\" Then\\n    ' 処理\\nEnd If<br>",
+    "a0": "セルの選択",
+    "a1": "フォントの変更",
+    "a2": "条件分岐や繰り返し",
+    "a3": "文字の入力",
+    "correct": "3",
+    "explanation": "マクロの記録はマウスやキーボードの操作を記録するものであり、If文やFor文といった制御構造（ステートメント）は記録されません。"
+  },
+  {
+    "q": "第4回. マクロはどこに書くの（VBEの起動）\\n問題1 VBE（Visual Basic Editor）を起動するためのショートカットキーとして正しいものを答えなさい。<br>Excelの画面上で【　1　】を押すと、VBEが起動する<br>",
+    "a0": "Alt + F8",
+    "a1": "Alt + F11",
+    "a2": "Ctrl + G",
+    "a3": "F5",
+    "correct": "2",
+    "explanation": "どのバージョンのExcelでも、VBEを起動する標準的なショートカットは Alt + F11 です。"
+  },
+  {
+    "q": "第5回. VBEのオプション設定（Option Explicit）\\n問題1 変数の宣言を強制するために、モジュールの先頭に自動挿入される【　1　】に入る記述を答えなさい。<br>【　1　】\\nSub Test()\\n    ' 変数を宣言せずに使うとエラーになる\\nEnd Sub<br>",
+    "a0": "On Error Resume Next",
+    "a1": "Option Explicit",
+    "a2": "Private Sub",
+    "a3": "Set Variable",
+    "correct": "2",
+    "explanation": "VBEのオプションで「変数の宣言を強制する」にチェックを入れると、新規モジュールの先頭に「Option Explicit」が自動挿入されます。"
+  },
+  {
+    "q": "第6回. とにかく書いてみよう（Sub,End Sub）\\n問題1 VBAにおける1つのマクロの最小単位である【　1　】に入る名称を答えなさい。<br>Sub 練習1()\\n    ' ここに処理を書く\\nEnd Sub\\n' この一塊を【　1　】と呼ぶ<br>",
+    "a0": "モジュール",
+    "a1": "プロシージャー",
+    "a2": "オブジェクト",
+    "a3": "メソッド",
+    "correct": "2",
+    "explanation": "SubからEnd Subまでの、一つの機能を持ったマクロの塊を「プロシージャー」と言います。"
+  },
+  {
+    "q": "第7回. マクロを実行するには（F5）\\n問題1 VBEの画面上で、プロシージャー内にカーソルがある時にマクロを実行する【　1　】を答えなさい。<br>VBE画面でプロシージャーを選択し、【　1　】キーを押すと実行される<br>",
+    "a0": "F1",
+    "a1": "F5",
+    "a2": "F8",
+    "a3": "F12",
+    "correct": "2",
+    "explanation": "VBE画面でマクロを即座に実行するショートカットは F5 です。"
+  },
+  {
+    "q": "第8回. セルに文字を入れるとは（Valueプロパティ）\\n問題1 セルの値を表すプロパティを指定したい。本来、【　1　】に入る記述を答えなさい（省略も可能です）。<br>Range(\"A1\").【　1　】 = \"おはよう\"<br>",
+    "a0": "Text",
+    "a1": "Name",
+    "a2": "Value",
+    "a3": "Data",
+    "correct": "3",
+    "explanation": "セルの「値」を操作するのは Value プロパティです。VBAではこれを省略して書くことが可能です。"
+  },
+  {
+    "q": "第9回. Rangeでのセルの指定方法\\n問題1 A1セルからC5セルまでの矩形範囲を指定したい。このとき、【　1　】に入る適切な記号を答えなさい。<br>Range(\"A1\" 【　1　】 \"C5\")<br>",
+    "a0": ", (カンマ)",
+    "a1": ": (コロン)",
+    "a2": "; (セミコロン)",
+    "a3": "イフン)",
+    "correct": "2",
+    "explanation": "セル範囲を指定する場合は、始点と終点を「:（コロン）」で区切って記述します。"
+  },
+  {
+    "q": "第10回. Range以外の指定方法（Cells,Rows,Columns）\\n問題1 C5セルをCellsを使って指定したい。【　1　】に入る引数の順番として正しいものを答えなさい。<br>Cells(【　1　】)<br>",
+    "a0": "3, 5",
+    "a1": "5, 3",
+    "a2": "\"C\", 5",
+    "a3": "5, C",
+    "correct": "2",
+    "explanation": "Cells(行番号, 列番号) の順で指定するため、5行目・3列目（C列）である Cells(5, 3) となります。"
+  },
+  {
+    "q": "第11回. RangeとCellsの使い方\\n問題1 変数 i を使って「i行目の3列目（C列）」のセルを指定したい。最も推奨される【　1　】の書き方を答えなさい。<br>Sub Test()\\n    Dim i As Long\\n    i = 5\\n    【　1　】 = \"データ\"\\nEnd Sub<br>",
+    "a0": "Range(\"C\" & i)",
+    "a1": "Cells(i, 3)",
+    "a2": "Cells(3, i)",
+    "a3": "Range(i, 3)",
+    "correct": "2",
+    "explanation": "変数を用いて単一のセルを動的に指定する場合、Cells(行, 列) の形式を使用するのが基本であり推奨されます。"
+  },
+  {
+    "q": "第12回. 変数宣言のDimとデータ型\\n問題1 「整数（約21億まで）」を格納するのに適した、VBAで最も一般的に使われる整数型を答えなさい。<br>Dim i As 【　1　】<br>",
+    "a0": "Integer",
+    "a1": "Long",
+    "a2": "String",
+    "a3": "Double",
+    "correct": "2",
+    "explanation": "Integerは扱える数値の範囲が狭いため、現在のVBAでは整数型として Long（長整数型）を使うのが一般的です。"
+  },
+  {
+    "q": "第13回. 定数宣言のConstと型宣言文字\\n問題1 プログラム実行中に値を変更できない「定数」を定義したい。【　1　】に入るキーワードを答えなさい。<br>【　1　】 tax_rate As Double = 0.1<br>",
+    "a0": "Dim",
+    "a1": "Const",
+    "a2": "Static",
+    "a3": "Let",
+    "correct": "2",
+    "explanation": "値を固定し、実行中に変更されないものを「定数」と呼び、Const で宣言します。"
+  },
+  {
+    "q": "第14回. 文字の結合（&）と継続行（_）\\n問題1 2つのセルの文字を結合して表示したい。本来推奨される【　1　】の演算子を答えなさい。<br>Range(\"C1\") = Range(\"A1\") 【　1　】 Range(\"B1\")<br>",
+    "a0": "&",
+    "a1": "@",
+    "a2": "：2. &",
+    "a3": "2",
+    "correct": "文字結合には &（アンパサンド）を使用します。+ 演算子でも可能ですが、数値が含まれる場合に足し算と混同されるリスクがあります。",
+    "explanation": ""
+  },
+  {
+    "q": "第15回. 四則演算と注釈（コメント）\\n問題1 割り算をした時の「余り」を求めたい。【　1　】に入る演算子を答えなさい。<br>Range(\"C1\") = 10 【　1　】 3 ' 結果は1になる<br>",
+    "a0": "/",
+    "a1": "\\",
+    "a2": "Mod",
+    "a3": "^",
+    "correct": "3",
+    "explanation": "剰余演算（余りを求める）には Mod を使用します。"
+  },
+  {
+    "q": "第16回. 繰り返し処理（For Next)\\n問題1 1行目から10行目まで、変数 i を使って繰り返したい。【　1　】に入る適切な内容を答えなさい。<br>Dim i As Long\\nFor i = 1 【　1　】 10\\n    Cells(i, 1) = 1\\nNext i<br>",
+    "a0": "To",
+    "a1": "Till",
+    "a2": "Untill",
+    "a3": "Step",
+    "correct": "1",
+    "explanation": "For Next 構文では、For 変数 = 開始 To 終了 の形式で繰り返し範囲を指定します。"
+  },
+  {
+    "q": "第17回. 繰り返し処理（Do Loop）\\n問題1 「A列のセルが空でない間」処理を繰り返したい。【　1　】に入るキーワードを答えなさい。<br>Dim i As Long: i = 1\\nDo 【　1　】 Cells(i, 1) <> \"\"\\n    ' 処理\\n    i = i + 1\\nLoop<br>",
+    "a0": "While",
+    "a1": "Until",
+    "a2": "If",
+    "a3": "Each",
+    "correct": "1",
+    "explanation": "Do While は指定した条件が真である間繰り返します。"
+  },
+  {
+    "q": "第18回. 最終行の取得（End,Rows.Count）\\n問題1 Excel 2007以降の全行数を取得したい。【　1　】に入るプロパティを答えなさい。<br>' 1048576 が返る\\nDim max_row As Long\\nmax_row = 【　1　】<br>",
+    "a0": "ActiveSheet.Rows",
+    "a1": "Rows.Count",
+    "a2": "Cells.Last",
+    "a3": "TotalRows",
+    "correct": "2",
+    "explanation": "Rows.Count はワークシートの全行数を返します。"
+  },
+  {
+    "q": "第19回. 総合練習問題1\\n問題1 表の2行目から最終行（lastRow）までを計算したい。【　1　】に入る正しい繰り返し構文を答えなさい。<br>Dim i As Long\\n【　1　】 i = 2 To lastRow\\n    Cells(i, 3) = Cells(i, 1) * Cells(i, 2)\\nNext i<br>",
+    "a0": "Do While",
+    "a1": "For",
+    "a2": "Select Case",
+    "a3": "If",
+    "correct": "2",
+    "explanation": "あらかじめ決まった回数（行数分）繰り返す処理には For Next ループが最適です。"
+  },
+  {
+    "q": "第20回. 条件分岐（IF）\\n問題1 「A1セルの値が100と等しくない」という条件式を書きたい。【　1　】に入る記号を答えなさい。<br>If Range(\"A1\") 【　1　】 100 Then\\n    ' 処理\\nEnd If<br>",
+    "a0": "!=",
+    "a1": "<>",
+    "a2": "Not =",
+    "a3": "==",
+    "correct": "2",
+    "explanation": "VBAで「等しくない（比較演算子）」は <> を使用します。"
+  },
+  {
+    "q": "第21回. 条件分岐（ElseIf）\\n問題1 1つのIf文の中で、さらに別の条件を追加したい。【　1　】に入るキーワードを答えなさい。<br>If score >= 80 Then\\n    rank = \"A\"\\n【　1　】 score >= 60 Then\\n    rank = \"B\"\\nEnd If<br>",
+    "a0": "Else",
+    "a1": "ElseIf",
+    "a2": "ThenIf",
+    "a3": "Case",
+    "correct": "2",
+    "explanation": "If文の中で複数の条件を連ねるには ElseIf を使用します。"
+  },
+  {
+    "q": "第22回. 条件分岐（Select Case）\\n問題1 変数の値によって多岐に分岐させたい。【　1　】に入るステートメント名を答えなさい。<br>【　1　】 score\\n    Case 80 To 100\\n        rank = \"優\"\\n    Case Else\\n        rank = \"不可\"\\nEnd Select<br>",
+    "a0": "If Then",
+    "a1": "Select Case",
+    "a2": "Switch",
+    "a3": "Case Of",
+    "correct": "2",
+    "explanation": "多肢条件分岐に特化したステートメントが Select Case です。"
+  },
+  {
+    "q": "第23回. メッセージボックス(MsgBox関数)\\n問題1 「はい」「いいえ」ボタンを表示させたい。【　1　】に入る定数を答えなさい。<br>MsgBox \"実行しますか？\", 【　1　】<br>",
+    "a0": "vbOKOnly",
+    "a1": "vbYesNo",
+    "a2": "vbRetryCancel",
+    "a3": "vbInformation",
+    "correct": "2",
+    "explanation": "MsgBoxのボタン指定として vbYesNo を指定すると、選択肢として「はい」と「いいえ」が表示されます。"
+  },
+  {
+    "q": "第24回. インプットボックス(InputBox関数)\\n問題1 ユーザーに入力させた値を変数に格納したい。【　1　】に入る関数名を答えなさい。<br>Dim user_input As String\\nuser_input = 【　1　】(\"名前を入力してください\")<br>",
+    "a0": "MsgBox",
+    "a1": "InputBox",
+    "a2": "DialogBox",
+    "a3": "TextBox",
+    "correct": "2",
+    "explanation": "ユーザーからのテキスト入力を受け取るには InputBox 関数を使用します。"
+  },
+  {
+    "q": "第25回. 名前付き引数について\\n問題1 引数に名前を付けて値を指定する際、使用する【　1　】の記号を答えなさい。<br>MsgBox prompt【　1　】\"こんにちは\"<br>",
+    "a0": "=",
+    "a1": ":=",
+    "a2": "=>",
+    "a3": "->",
+    "correct": "2",
+    "explanation": "名前付き引数を指定する際は、引数名:=値 という形式で記述します。これは名前付き引数専用の記法です。"
+  },
+  {
+    "q": "第26回. 総合練習問題2\\n問題1 InputBoxで受け取った文字列を数値として合計したい。【　1　】に入る「数値化」のための最も簡単な処理を答えなさい。<br>Dim user_val As String\\nuser_input = InputBox(\"数値を入力\")\\n' user_input を数値として扱うために 【　1　】 を足すなどの処理をする\\ntotal = total + user_input<br>",
+    "a0": "0",
+    "a1": "1",
+    "a2": "",
+    "a3": " ",
+    "correct": "1",
+    "explanation": "InputBoxの戻り値は文字列ですが、0を足すなどの演算を行うか、数値型変数に代入することで数値として扱えるようになります。"
+  },
+  {
+    "q": "第27回. ブック・シートの選択（Select,Activate）\\n問題1 別のブック「Book2.xlsx」を最前面に出して操作対象にしたい。【　1　】に入るメソッドを答えなさい。<br>Workbooks(\"Book2.xlsx\").【　1　】<br>",
+    "a0": "Select",
+    "a1": "Activate",
+    "a2": "Open",
+    "a3": "Show",
+    "correct": "2",
+    "explanation": "ブックを最前面に表示させて操作対象にするには Activate メソッドを使用します。ブック名には拡張子も必要です。"
+  },
+  {
+    "q": "第28回. セル・行・列の選択（Select,Activate,CurrentRegion）\\n問題1 特定のセルから隣接するデータ範囲全体（表全体）を一括で指定したい。【　1　】に入るプロパティを答えなさい。<br>Range(\"B2\").【　1　】.Select<br>",
+    "a0": "UsedRange",
+    "a1": "CurrentRegion",
+    "a2": "DataArea",
+    "a3": "FullRange",
+    "correct": "2",
+    "explanation": "CurrentRegion プロパティは、空白の行と列で囲まれた現在のデータ領域全体を返します。"
+  },
+  {
+    "q": "第29回. セル・行・列の削除・挿入（Delete,Insert）\\n問題1 セルを削除し、下のセルを上に詰めたい。【　1　】に入るシフト方向の定数を答えなさい。<br>Range(\"A1\").Delete Shift:=【　1　】<br>",
+    "a0": "xlToLeft",
+    "a1": "xlUp",
+    "a2": "xlDown",
+    "a3": "xlRight",
+    "correct": "2",
+    "explanation": "セルの削除後に下から上に詰める場合は xlUp を指定します。削除や挿入時には方向を明示することが推奨されます。"
+  },
+  {
+    "q": "第30回. 総合練習問題3\\n問題1 行を削除するループを組む際、行番号がずれるのを防ぐための【　1　】に入る記述を答えなさい。<br>For i = lastRow To 1 【　1　】\\n    If Cells(i, 1) = \"\" Then Rows(i).Delete\\nNext i<br>",
+    "a0": "Step 1",
+    "a1": "Step -1",
+    "a2": "Decrease 1",
+    "a3": "Move Back",
+    "correct": "2",
+    "explanation": "行の削除を伴うループでは、上から消すと下の行番号が変わってしまうため、下から上（Step -1）に向かって処理するのが定石です。"
+  },
+  {
+    "q": "第31回. セルの書式（表示形式,NumberFormatLocal）\\n問題1 セルの表示形式を「yyyy/mm/dd」に設定したい。【　1　】に入るプロパティを答えなさい。<br>Range(\"A1\").【　1　】 = \"yyyy/mm/dd\"<br>",
+    "a0": "Format",
+    "a1": "NumberFormatLocal",
+    "a2": "Style",
+    "a3": "DisplayFormat",
+    "correct": "2",
+    "explanation": "セルの表示形式を設定するには NumberFormatLocal プロパティを使用します。"
+  },
+  {
+    "q": "第32回. セルの書式（配置,Alignment）\\n問題1 セル内の値を「中央揃え（横位置）」に設定したい。【　1　】に入る定数を答えなさい。<br>Range(\"A1\").HorizontalAlignment = 【　1　】<br>",
+    "a0": "xlLeft",
+    "a1": "xlCenter",
+    "a2": "xlRight",
+    "a3": "xlDistributed",
+    "correct": "2",
+    "explanation": "横位置を中央揃えにするには xlCenter を代入します。"
+  },
+  {
+    "q": "第33回. セルの書式（フォント,Font）\\n問題1 文字を「太字」に設定したい。【　1　】に入るプロパティを答えなさい。<br>Range(\"A1\").Font.【　1　】 = True<br>",
+    "a0": "Thick",
+    "a1": "Bold",
+    "a2": "Italic",
+    "a3": "Style",
+    "correct": "2",
+    "explanation": "太字設定は Fontオブジェクトの Bold プロパティを使用します。"
+  },
+  {
+    "q": "第34回. セルの書式（塗りつぶし,Interior）\\n問題1 セルの背景色（塗りつぶし）を操作したい。【　1　】に入るプロパティ名を答えなさい。<br>Range(\"A1\").【　1　】.Color = vbYellow<br>",
+    "a0": "Background",
+    "a1": "Interior",
+    "a2": "Fill",
+    "a3": "Pattern",
+    "correct": "2",
+    "explanation": "セルの背景（塗りつぶし）に関する設定は Interior プロパティ（Interiorオブジェクト）で行います。"
+  },
+  {
+    "q": "第35回. セルの書式（罫線,Border）\\n問題1 範囲内の格子状に実線を引く最も簡潔な方法を答えなさい。<br>' 括弧を省略してプロパティを指定すると全辺に適用される\\nRange(\"A1:C5\").Borders.【　1　】 = xlContinuous<br>",
+    "a0": "LineStyle",
+    "a1": "LineType",
+    "a2": "BorderStyle",
+    "a3": "Weight",
+    "correct": "1",
+    "explanation": "罫線の種類を指定するのは LineStyle プロパティです。Bordersの引数を省略すると全辺（格子内部含む）に一括適用されます。"
+  },
+  {
+    "q": "第36回. 総合練習問題4\\n問題1 大量のセルに書式を設定する際、動作を速くするための【　1　】に入る考え方を答えなさい。<br>1セルずつ繰り返し設定するよりも、【　1　】でまとめて処理する方が高速である。<br>",
+    "a0": "モジュールごと",
+    "a1": "セル範囲",
+    "a2": "ブックごと",
+    "a3": "行単位",
+    "correct": "2",
+    "explanation": "VBAでは1行ずつ処理を増やすよりも、できるだけ広いセル範囲をまとめて一括操作する方が実行速度が速くなります。"
+  },
+  {
+    "q": "第37回. ブック・シートの指定\\n問題1 アクティブでない「Sheet1」のA1セルに文字を入れたい。【　1　】に入る指定方法を答えなさい。<br>【　1　】(\"Sheet1\").Range(\"A1\") = \"データ\"<br>",
+    "a0": "Sheet",
+    "a1": "Worksheets",
+    "a2": "ActiveSheet",
+    "a3": "ThisWorkbook",
+    "correct": "2",
+    "explanation": "シートを明示的に指定して操作するには Worksheets(\"シート名\") と記述します。これにより、どのシートがアクティブでも正しく動作します。"
+  },
+  {
+    "q": "第38回. セルに計算式を設定（Formula）\\n問題1 セルに計算式（=SUM(B1:B10)）を設定したい。本来推奨される【　1　】のプロパティを答えなさい。<br>Range(\"A1\").【　1　】 = \"=SUM(B1:B10)\"<br>",
+    "a0": "Value",
+    "a1": "Formula",
+    "a2": "Method",
+    "a3": "Expression",
+    "correct": "2",
+    "explanation": "計算式を設定・参照するには Formula プロパティを使用します（Valueでも代入は可能ですが、意味合いが異なります）。"
+  },
+  {
+    "q": "第39回. セルのクリア（Clear,ClearContents）\\n問題1 セルの書式（色や罫線）は残し、文字や数式だけを消去したい。【　1　】に入るメソッドを答えなさい。<br>Range(\"A1:C5\").【　1　】<br>",
+    "a0": "Clear",
+    "a1": "ClearContents",
+    "a2": "Delete",
+    "a3": "Remove",
+    "correct": "2",
+    "explanation": "ClearContents は数式と文字のみを削除し、書式は保持します。"
+  },
+  {
+    "q": "第40回. セルのコピー・カット&ペースト\\n問題1 A1セルをコピーし、Selectを使わずに直接B1セルに貼り付けたい。【　1　】に入る引数を答えなさい。<br>Range(\"A1\").Copy 【　1　】:=Range(\"B1\")<br>",
+    "a0": "To",
+    "a1": "Destination",
+    "a2": "Target",
+    "a3": "Paste",
+    "correct": "2",
+    "explanation": "Copyメソッドに名前付き引数 Destination を指定することで、クリップボードを経由せずに直接コピー先へ貼り付けられます。"
   }
 ]
