@@ -8,6 +8,12 @@ fetch('questions.json')
     .then(response => response.json())
     .then(data => {
         quizData = data;
+        const urlParams = new URLSearchParams(window.location.search);
+        const startQ = parseInt(urlParams.get('q')); // URLに ?q=50 とかあれば取得
+
+        if (startQ && startQ > 0 && startQ <= quizData.length) {
+            currentIdx = startQ - 1; // 問題番号は0から始まるので1引く
+        }
         showQuestion();
     })
     .catch(error => {

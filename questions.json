@@ -227,11 +227,11 @@
   {
     "q": "日付の値を定数として直接指定したい。【　2　】に入る囲み記号を答えなさい。<br><br>Const my_date As Date = 【　2　】2024/01/01【　2　】<br>",
     "a0": "”",
-    "a1": "'",
+    "a1": "#",
     "a2": "[ ]",
-    "a3": "2",
-    "correct": "VBAで日付のリテラル値を記述する際は、#（シャープ）で囲む必要があります。",
-    "explanation": ""
+    "a3": "記号なし",
+    "correct": "1",
+    "explanation": "VBAで日付のリテラル値を記述する際は、#（シャープ）で囲む必要があります。"
   },
   {
     "q": "2つのセルの文字を結合して表示したい。本来推奨される【　1　】の演算子を答えなさい。<br><br>Range(”C1”) = Range(”A1”) 【　1　】 Range(”B1”)<br>",
@@ -239,7 +239,7 @@
     "a1": "@",
     "a2": "*",
     "a3": "：",
-    "correct": "1",
+    "correct": "0",
     "explanation": "文字結合には &（アンパサンド）を使用します。+ 演算子でも可能ですが、数値が含まれる場合に足し算と混同されるリスクがあります。"
   },
   {
@@ -262,11 +262,11 @@
   },
   {
     "q": "コード内に実行に影響しない「メモ」を残したい。【　2　】に入る記号を答えなさい。<br><br>【　2　】 ここは計算処理です<br>Range(”A1”) = 100 * 1.1<br>",
-    "a0": "' (シングルクォーテーション)",
+    "a0": "'",
     "a1": "//",
     "a2": "/*",
     "a3": "：",
-    "correct": "1",
+    "correct": "0",
     "explanation": "シングルクォーテーション以降の記述はコメント（注釈）となり、プログラムの実行には影響しません。"
   },
   {
@@ -391,9 +391,9 @@
     "a0": "To",
     "a1": "Till",
     "a2": "~",
-    "a3": "1",
-    "correct": "Select Caseで値の範囲を指定する場合は To キーワードを使用します。",
-    "explanation": ""
+    "a3": ":",
+    "correct": "0",
+    "explanation": "Select Caseで値の範囲を指定する場合は To キーワードを使用します。"
   },
   {
     "q": "「はい」「いいえ」ボタンを表示させたい。【　1　】に入る定数を答えなさい。<br><br>MsgBox ”実行しますか？”, 【　1　】<br>",
@@ -718,5 +718,509 @@
     "a3": "ScreenUpdating",
     "correct": "1",
     "explanation": "CutCopyMode = False を実行すると、コピー中を示す点滅が解除されます。手動のESCキーに相当します。"
+  },
+  {
+    "q": "マクロの実行中に画面描画の更新を停止して処理を高速化したい。このとき、【 1 】に入る適切なプロパティを答えなさい。<br>Sub FastMacro() Application.【 1 】 = False ' 大量処理 Application.【 1 】 = True End Sub",
+    "a0": "DisplayAlerts",
+    "a1": "EnableEvents",
+    "a2": "ScreenUpdating",
+    "a3": "Calculation",
+    "correct": "2",
+    "explanation": "ScreenUpdatingプロパティをFalseに設定すると、マクロ実行中の画面更新にかかる時間が不要になり、処理速度が向上します。"
+  },
+  {
+    "q": "シートを削除する際に表示される確認メッセージを非表示にしたい。このとき、【 2 】に入る適切なプロパティを答えなさい。<br>Sub DeleteSheet() Application.【 2 】 = False Worksheets(1).Delete Application.【 2 】 = True End Sub",
+    "a0": "DisplayAlerts",
+    "a1": "ScreenUpdating",
+    "a2": "Interactive",
+    "a3": "StatusBar",
+    "correct": "0",
+    "explanation": "DisplayAlertsをFalseに設定することで、シート削除時などの応答が必要な警告メッセージの表示を停止し、マクロを自動的に進行させることができます。"
+  },
+  {
+    "q": "Like演算子を使って、セルA1の値が「任意の1桁の数字」であるか判定したい。このとき、【 1 】に入る適切なワイルドカードを答えなさい。<br>Sub CheckDigit() If Range(”A1”).Value Like ”【 1 】” Then MsgBox ”数字1桁です” End If End Sub",
+    "a0": "?",
+    "a1": "*",
+    "a2": "#",
+    "a3": ":",
+    "correct": "2",
+    "explanation": "Like演算子において「#」は、任意の1バイト（半角）の数字（0-9）と一致することを表します。"
+  },
+  {
+    "q": "セルA1の値が「AからZまでの大文字1文字以外」であるかを判定したい。このとき、【 2 】に入る適切なパターンを答えなさい。<br>Sub CheckPattern() If Range(”A1”).Value Like ”【 2 】” Then MsgBox ”対象外の文字です” End If End Sub",
+    "a0": "”[A-Z]”",
+    "a1": "”[!A-Z]”",
+    "a2": "”[^A-Z]”",
+    "a3": "”[*A-Z]”",
+    "correct": "1",
+    "explanation": "文字リストの先頭に感嘆符「!」を付けることで、そのリストに指定した文字以外の任意の1文字を対象とすることができます。"
+  },
+  {
+    "q": "Range型の変数「MyRange」に、特定のセル範囲を代入したい。このとき、【 1 】に入る適切なキーワードを答えなさい。<br>Sub SetRange() Dim MyRange As Range 【 1 】 MyRange = Worksheets(1).Range(”B2:D10”) End Sub",
+    "a0": "Let",
+    "a1": "Dim",
+    "a2": "Set",
+    "a3": "Get",
+    "correct": "2",
+    "explanation": "セルやシートなどのオブジェクトを変数に代入する際は、必ずSetキーワードを使用しなければなりません。"
+  },
+  {
+    "q": "変数「i」に行番号が入っているとき、Cellsを用いてi行目のA列を参照したい。このとき、【 2 】に入る適切な記述を答えなさい。<br>Sub SelectCell() Dim i As Long: i = 5 Cells(【 2 】).Select End Sub",
+    "a0": "”A”, i",
+    "a1": "i, ”A”",
+    "a2": "1, i",
+    "a3": "”A” & i",
+    "correct": "1",
+    "explanation": "Cellsプロパティは「行, 列」の順で指定します。列は列番号（1）の他に、列記号（”A”）で指定することも可能です。"
+  },
+  {
+    "q": "メッセージを表示するだけのMsgBoxのように、戻り値を使用しない場合の関数の記述方法として、【 1 】に入る適切なルールを答えなさい。<br>Sub ShowMsg() ' 引数をカッコで囲まない MsgBox 【 1 】 End Sub",
+    "a0": "”こんにちは”",
+    "a1": "(”こんにちは”)",
+    "a2": "=”こんにちは”",
+    "a3": "[”こんにちは”]",
+    "correct": "0",
+    "explanation": "VBAでは、関数の戻り値を使用（代入）しない場合、引数を括弧()で囲まずに記述します。"
+  },
+  {
+    "q": "ある関数の戻り値を、別の関数の引数として指定することを何と呼ぶか、【 2 】に入る言葉を答えなさい。<br>Sub NestFunc() ' 関数を【 2 】して使う Cells(1, 1) = Left(Format(Date, ”yyyy”), 2) End Sub",
+    "a0": "ループ",
+    "a1": "ネスト",
+    "a2": "ジョイン",
+    "a3": "キャスト",
+    "correct": "1",
+    "explanation": "ソースでは、**関数名(関数名(引数), 引数)**のように関数を組み合わせて使うことを「ネスト」と呼んでいます。"
+  },
+  {
+    "q": "セルA1の日付を「2023年05月01日」という形式の文字列として表示したい。このとき、【 1 】に入る適切な書式を答えなさい。<br>Sub DateFormat() MsgBox Format(Range(”A1”), ”【 1 】”) End Sub",
+    "a0": "yyyy/mm/dd",
+    "a1": "yyyy年m月d日",
+    "a2": "yyyy年mm月dd日",
+    "a3": "yyyy-mm-dd",
+    "correct": "2",
+    "explanation": "「mm」や「dd」を指定することで、1桁の数字の場合に先頭に0を付けて2桁で表示されます。"
+  },
+  {
+    "q": "Format関数で曜日を「月、火…」のように日本語1文字で取得したい。このとき、【 2 】に入る適切な書式指定文字を答えなさい。<br>Sub WeekdayFormat() MsgBox Format(Date, ”【 2 】”) End Sub",
+    "a0": "dddd",
+    "a1": "aaaa",
+    "a2": "aaa",
+    "a3": "ddd",
+    "correct": "2",
+    "explanation": "「aaa」は曜日を日本語の省略形（日〜土）で返します。「aaaa」は「日曜日〜土曜日」となります。"
+  },
+  {
+    "q": "VBAのRound関数を使用して「2.5」を丸めたい。実行結果が【 1 】になるように適切な数値を答えなさい。<br>Sub RoundTest() ' VBAのRoundは銀行型丸め MsgBox Round(2.5) ' 結果は 【 1 】 End Sub",
+    "a0": "3",
+    "a1": "2",
+    "a2": "2.5",
+    "a3": "0",
+    "correct": "1",
+    "explanation": "VBAのRound関数は「銀行型丸め（最近接偶数への丸め）」を採用しており、端数が0.5の場合は最も近い偶数に丸められます。"
+  },
+  {
+    "q": "負の数値「-99.2」に対してInt関数を適用した結果として、【 2 】に入る適切な数値を答えなさい。<br>Sub IntTest() MsgBox Int(-99.2) ' 結果は 【 2 】 End Sub",
+    "a0": "-99",
+    "a1": "-99.2",
+    "a2": "-100",
+    "a3": "-99.0",
+    "correct": "2",
+    "explanation": "Int関数は数値以下の最大の整数を返します。-99.2以下で最大の整数は-100となります。"
+  },
+  {
+    "q": "文字列の中から特定の文字が最初に出現する位置を取得したい。このとき、【 1 】に入る適切な関数名を答えなさい。<br>Sub FindChar() ' ”A”の位置(5)を取得したい MsgBox 【 1 】(”123aAbBcC”, ”A”) End Sub",
+    "a0": "Replace",
+    "a1": "InStr",
+    "a2": "Mid",
+    "a3": "Left",
+    "correct": "1",
+    "explanation": "InStr関数は、ある文字列の中から指定した文字列を検索し、最初に見つかった文字位置を返します。"
+  },
+  {
+    "q": "文字列内の「ひらがな」を「カタカナ」に変換したい。このとき、【 2 】に入る適切な定数を答えなさい。<br>Sub ConvertChar() MsgBox StrConv(”あいうえお”, 【 2 】) End Sub",
+    "a0": "vbWide",
+    "a1": "vbNarrow",
+    "a2": "vbKatakana",
+    "a3": "vbHiragana",
+    "correct": "2",
+    "explanation": "StrConv関数の第2引数にvbKatakanaを指定することで、ひらがなをカタカナに変換できます。"
+  },
+  {
+    "q": "ある日付の「3ヶ月後」を計算して取得したい。このとき、【 1 】に入る適切な時間間隔の文字列を答えなさい。<br>Sub AddMonth() MsgBox DateAdd(”【 1 】”, 3, Date) End Sub",
+    "a0": "yyyy",
+    "a1": "m",
+    "a2": "d",
+    "a3": "q",
+    "correct": "1",
+    "explanation": "DateAdd関数の第1引数に「m」を指定することで、月単位の加算を行うことができます。"
+  },
+  {
+    "q": "現在の日付と時刻の両方の値を一度に取得したい。このとき、【 2 】に入る適切な関数名を答えなさい。<br>Sub ShowNow() MsgBox 【 2 】 End Sub",
+    "a0": "Date",
+    "a1": "Time",
+    "a2": "Now",
+    "a3": "Timer",
+    "correct": "2",
+    "explanation": "Now関数は、現在のシステムの日付と時刻の両方の値を返します。"
+  },
+  {
+    "q": "シート上の「枠線（目盛線）」を非表示にしたい。このとき、【 1 】に入る適切なプロパティを答えなさい。<br>Sub HideGrid() ActiveWindow.【 1 】 = False End Sub",
+    "a0": "DisplayHeadings",
+    "a1": "DisplayGridlines",
+    "a2": "Visible",
+    "a3": "Zoom",
+    "correct": "1",
+    "explanation": "枠線の表示・非表示は、WindowオブジェクトのDisplayGridlinesプロパティで制御します。"
+  },
+  {
+    "q": "ウィンドウの表示倍率を80%に設定したい。このとき、【 2 】に入る適切なプロパティ名を答えなさい。<br>Sub SetZoom() ActiveWindow.【 2 】 = 80 End Sub",
+    "a0": "Percentage",
+    "a1": "Scale",
+    "a2": "Size",
+    "a3": "Zoom",
+    "correct": "3",
+    "explanation": "ウィンドウの表示倍率は、WindowオブジェクトのZoomプロパティを使用してパーセント単位で指定します。"
+  },
+  {
+    "q": "Withステートメントを使用して、セルの複数のプロパティを一度に設定したい。このとき、【 1 】に入る適切な記号を答えなさい。<br>Sub SetFont() With Range(”A1”).Font 【 1 】Bold = True 【 1 】Size = 12 End With End Sub",
+    "a0": ":",
+    "a1": ".",
+    "a2": "_",
+    "a3": "&",
+    "correct": "1",
+    "explanation": "With〜End Withの間では、ピリオド「.」から書き始めることで、Withに指定したオブジェクト名を省略できます。"
+  },
+  {
+    "q": "Withステートメントの中で、オブジェクトをさらに絞り込んで記述することを何と呼ぶか、【 2 】に入る言葉を答えなさい。<br>Sub NestWith() With Range(”A1”) With .Font ' 【 2 】して使う End With End With End Sub",
+    "a0": "ループ",
+    "a1": "ネスト",
+    "a2": "ジョイン",
+    "a3": "リンク",
+    "correct": "1",
+    "explanation": "Withの中に別のWithを入れることを「ネスト（入れ子）」と呼びます。ただし可読性が悪くなるため多用は避けるべきとされています。"
+  },
+  {
+    "q": "「動作しているマクロ自身が書かれているブック」を参照したい。このとき、【 1 】に入る適切なオブジェクト名を答えなさい。<br>Sub GetMyBook() MsgBox 【 1 】.Name End Sub",
+    "a0": "ActiveWorkbook",
+    "a1": "ThisWorkbook",
+    "a2": "MainWorkbook",
+    "a3": "Workbooks(1)",
+    "correct": "1",
+    "explanation": "ThisWorkbookは、現在実行されているマクロのコードが記述されているブックそのものを参照します。"
+  },
+  {
+    "q": "Workbookオブジェクトの変数宣言を正しく行いたい。このとき、【 2 】に入る適切なデータ型を答えなさい。<br>Sub DeclBook() Dim wb As 【 2 】 Set wb = Workbooks(1) End Sub",
+    "a0": "Workbooks",
+    "a1": "Workbook",
+    "a2": "ExcelFile",
+    "a3": "Book",
+    "correct": "1",
+    "explanation": "個別のオブジェクトを扱うデータ型は、複数形のWorkbooksではなく、単数形のWorkbookです。"
+  },
+  {
+    "q": "VBAからExcelのワークシート関数であるVLOOKUPを呼び出したい。このとき、【 1 】に入る適切な記述を答えなさい。<br>Sub UseVlookup() Dim res As Variant res = 【 1 】.VLookup(Range(”D1”), Range(”A:B”), 2, 0) End Sub",
+    "a0": "WorksheetFunction",
+    "a1": "VBA.Function",
+    "a2": "Excel.Function",
+    "a3": "Worksheets",
+    "correct": "0",
+    "explanation": "VBAからExcelのワークシート関数を利用するには、WorksheetFunctionクラスを経由して呼び出します。"
+  },
+  {
+    "q": "WorksheetFunction経由でVLOOKUPを使い、検索値が見つからなかった場合のマクロの挙動として、【 2 】に入る適切な内容を答えなさい。<br>Sub ErrorCheck() ' 見つからない場合、【 2 】 res = WorksheetFunction.VLookup(”なし”, Range(”A:B”), 2, 0) End Sub",
+    "a0": "空文字が返る",
+    "a1": "0が返る",
+    "a2": "実行時エラーで停止する",
+    "a3": "次の行へ進む",
+    "correct": "2",
+    "explanation": "WorksheetFunctionを使用してエラー（#N/Aなど）が発生する場合、VBAでは実行時エラーとなりマクロが停止します。"
+  },
+  {
+    "q": "ワークシートの「名前」を取得または変更したい。このとき、【 1 】に入る適切なプロパティを答えなさい。<br>Sub SheetName() MsgBox Worksheets(1).【 1 】 End Sub",
+    "a0": "Text",
+    "a1": "Name",
+    "a2": "Label",
+    "a3": "Title",
+    "correct": "1",
+    "explanation": "ワークシートの名前を扱うには、Nameプロパティを使用します。"
+  },
+  {
+    "q": "ワークシートだけでなく、グラフシートなども含む「全てのシート」の集まりを参照したい。このとき、【 2 】に入る適切なコレクション名を答えなさい。<br>Sub AllSheets() MsgBox 【 2 】.Count End Sub",
+    "a0": "Worksheets",
+    "a1": "Sheets",
+    "a2": "AllSheets",
+    "a3": "ChartSheets",
+    "correct": "1",
+    "explanation": "Sheetsコレクションは、ブック内の全ての種類のシート（ワークシート、グラフシート等）を含みます。"
+  },
+  {
+    "q": "エラーが発生した際に、処理を「ErrorHandler」という行ラベルへ飛ばしたい。このとき、【 1 】に入る適切なステートメントを答えなさい。<br>Sub ErrorTest() 【 1 】 ErrorHandler ' 処理 Exit Sub ErrorHandler: MsgBox ”エラー発生” End Sub",
+    "a0": "On Error Jump",
+    "a1": "On Error GoTo",
+    "a2": "If Error Then",
+    "a3": "On Error Resume",
+    "correct": "1",
+    "explanation": "On Error GoTo 行ラベルという形式で、エラー発生時のジャンプ先を指定します。"
+  },
+  {
+    "q": "エラーがない場合に、エラー処理用のコードが実行されてしまうのを防ぎたい。このとき、【 2 】に入る適切なステートメントを答えなさい。<br>Sub ProcessEnd() ' 正常処理 【 2 】 ErrorHandler: ' エラー処理 End Sub",
+    "a0": "End Sub",
+    "a1": "Exit Sub",
+    "a2": "Stop",
+    "a3": "End",
+    "correct": "1",
+    "explanation": "正常終了時にエラー処理ルーチンへ入らないようにするため、その直前でExit Subを実行してプロシージャを抜けます。"
+  },
+  {
+    "q": "エラーが発生しても中断せず、次の行から処理を続行させたい。このとき、【 1 】に入る適切なステートメントを答えなさい。<br>Sub IgnoreError() 【 1 】 Range(”A1”).Value = 1 / 0 ' ゼロ除算エラー MsgBox ”止まりません” End Sub",
+    "a0": "On Error GoTo 0",
+    "a1": "On Error Resume Next",
+    "a2": "On Error Ignore",
+    "a3": "On Error Skip",
+    "correct": "1",
+    "explanation": "On Error Resume Nextは、エラーが発生しても停止せず、直後のステートメントから実行を継続させる設定です。"
+  },
+  {
+    "q": "発生したエラーの情報を消去して、次の判定に備えたい。このとき、【 2 】に入る適切なメソッドを答えなさい。<br>Sub ClearError() If Err.Number <> 0 Then Err.【 2 】 End If End Sub",
+    "a0": "Reset",
+    "a1": "Delete",
+    "a2": "Clear",
+    "a3": "Empty",
+    "correct": "2",
+    "explanation": "Err.Clearを実行することで、保持されているエラー情報をリセットできます。"
+  },
+  {
+    "q": "設定したエラー処理を無効に戻し、通常のVBAエラー停止状態にしたい。このとき、【 1 】に入る適切な記述を答えなさい。<br>Sub ResetError() On Error Resume Next ' 一時的にエラー無視 【 1 】 End Sub",
+    "a0": "On Error GoTo 0",
+    "a1": "On Error Off",
+    "a2": "On Error Resume",
+    "a3": "On Error Clear",
+    "correct": "0",
+    "explanation": "On Error GoTo 0は、現在のプロシージャで有効なエラー処理ルーチンを無効にします。"
+  },
+  {
+    "q": "マクロVBAにおいて、どうしても避けられないエラーへの向き合い方として、【 2 】に入る適切な内容を答えなさい。<br>Sub Policy() ' エラーを回避する方法がない場合、 ' エラーを【 2 】ことも必須技術である。 End Sub",
+    "a0": "出ないように祈る",
+    "a1": "上手く利用する",
+    "a2": "全て無視する",
+    "a3": "全て記録する",
+    "correct": "1",
+    "explanation": "ソース内では、避けられないエラーをエラー処理機能で制御し、「上手く利用する」ことがVBAの必須技術であると述べられています。"
+  },
+  {
+    "q": "ワークシートを変数に代入して操作したい。このとき、【 1 】に入る適切なキーワードを答えなさい。<br>Sub AssignSheet() Dim ws As Worksheet 【 1 】 ws = Worksheets(1) End Sub",
+    "a0": "Let",
+    "a1": "Dim",
+    "a2": "Set",
+    "a3": "Get",
+    "correct": "2",
+    "explanation": "オブジェクト（シートやセル等）を変数に代入する際は、必ずSetステートメントを使用します。"
+  },
+  {
+    "q": "オブジェクト変数が「何も参照していない空の状態」であるかを判定したい。このとき、【 2 】に入る適切なキーワードを答えなさい。<br>Sub CheckObject() If ws Is 【 2 】 Then MsgBox ”空です” End If End Sub",
+    "a0": "Empty",
+    "a1": "Null",
+    "a2": "Nothing",
+    "a3": "Zero",
+    "correct": "2",
+    "explanation": "オブジェクト変数の初期値はNothingであり、オブジェクトが割り当てられていないことを示します。"
+  },
+  {
+    "q": "コレクションに含まれているオブジェクトの総数を取得したい。このとき、【 1 】に入る適切なプロパティを答えなさい。<br>Sub GetCount() MsgBox Worksheets.【 1 】 End Sub",
+    "a0": "Length",
+    "a1": "Size",
+    "a2": "Count",
+    "a3": "Items",
+    "correct": "2",
+    "explanation": "コレクション名に対して**.Count**プロパティを使用することで、要素の数を取得できます。"
+  },
+  {
+    "q": "ソース内の説明で、「オブジェクトでもあり、コレクションでもある」とされる特別な存在はどれか、【 2 】に入るものを答えなさい。<br>Sub SpecialObject() ' 【 2 】は特別な構造を持っている End Sub",
+    "a0": "Workbook",
+    "a1": "Worksheet",
+    "a2": "Range",
+    "a3": "Font",
+    "correct": "2",
+    "explanation": "VBAには「Cellオブジェクト」が存在せず、単一セルの集まり（コレクション）自体がRangeオブジェクトであるという特殊な構造になっています。"
+  },
+  {
+    "q": "ブック内の全てのワークシートを順番に処理したい。このとき、【 1 】に入る適切な構文を答えなさい。<br>Sub LoopSheets() Dim ws As Worksheet 【 1 】 ws In Worksheets MsgBox ws.Name Next ws End Sub",
+    "a0": "For Next",
+    "a1": "Do Loop",
+    "a2": "For Each",
+    "a3": "While Wend",
+    "correct": "2",
+    "explanation": "For Eachは、コレクションの各要素に対して繰り返し処理を実行するための構文です。"
+  },
+  {
+    "q": "セル範囲 Range(”A1:B5”) を For Each で処理した際、セルの取得順序として正しいものを【 2 】から選びなさい。<br>Sub LoopRange() ' 【 2 】の順で取得される End Sub",
+    "a0": "A1, A2, A3... (行から列)",
+    "a1": "A1, B1, A2, B2... (列から行)",
+    "a2": "指定した順序",
+    "a3": "ランダム",
+    "correct": "1",
+    "explanation": "RangeオブジェクトのFor Eachは「列→行」の順で取得されるため、順序が重要な場合は注意が必要です。"
+  },
+  {
+    "q": "シートを特定のシートの「直後」にコピーしたい。このとき、【 1 】に入る適切な引数指定を答えなさい。<br>Sub CopySheet() Worksheets(1).Copy 【 1 】:=Worksheets(2) End Sub",
+    "a0": "Before",
+    "a1": "After",
+    "a2": "Behind",
+    "a3": "NextTo",
+    "correct": "1",
+    "explanation": "After引数に特定のシートを指定することで、そのシートの直後にコピーを配置できます。"
+  },
+  {
+    "q": "Worksheets(1).Copy を実行する際、引数を全て省略した場合の挙動として、【 2 】に入る適切な内容を答えなさい。<br>Sub CopyOmit() ' 引数を省略すると、【 2 】 Worksheets(1).Copy End Sub",
+    "a0": "エラーになる",
+    "a1": "アクティブシートの前にコピーされる",
+    "a2": "新規ブックが作成され、そこにコピーされる",
+    "a3": "クリップボードにコピーされるだけ",
+    "correct": "2",
+    "explanation": "引数BeforeとAfterの両方を省略した場合は、自動的に新規ブックが作成され、そこにコピーされます。"
+  },
+  {
+    "q": "新しいシートを追加し、その戻り値を直接変数に受け取りたい。このとき、【 1 】に入る適切なキーワードを答えなさい。<br>Sub AddAndSet() Dim ws As Worksheet 【 1 】 ws = Sheets.Add End Sub",
+    "a0": "Let",
+    "a1": "Dim",
+    "a2": "Set",
+    "a3": "New",
+    "correct": "2",
+    "explanation": "Addメソッドは新しく作成されたシートのオブジェクトを返すため、Setを使って代入します。"
+  },
+  {
+    "q": "ブックの最後に新しいシートを追加したい。このとき、【 2 】に入る適切な記述を答えなさい。<br>Sub AddToLast() Sheets.Add After:=Sheets(【 2 】) End Sub",
+    "a0": "1",
+    "a1": "”Last”",
+    "a2": "Sheets.Count",
+    "a3": "ActiveSheet",
+    "correct": "2",
+    "explanation": "Sheets.Count（シートの総数）をインデックスとして指定することで、最後のシートの後ろに挿入できます。"
+  },
+  {
+    "q": "コピーしたセルの「値のみ」を貼り付けたい。このとき、【 1 】に入る適切な定数を答えなさい。<br>Sub PasteValues() Range(”A1”).Copy Range(”B1”).PasteSpecial Paste:=【 1 】 End Sub",
+    "a0": "xlPasteAll",
+    "a1": "xlPasteFormats",
+    "a2": "xlPasteValues",
+    "a3": "xlPasteFormulas",
+    "correct": "2",
+    "explanation": "xlPasteValuesを指定することで、書式などを除いた「値」だけを貼り付けることができます。"
+  },
+  {
+    "q": "貼り付けの際に行と列を入れ替えたい。このとき、【 2 】に入る適切な引数名と設定を答えなさい。<br>Sub PasteTrans() Range(”A1:B10”).Copy Range(”D1”).PasteSpecial 【 2 】:=True End Sub",
+    "a0": "Operation",
+    "a1": "SkipBlanks",
+    "a2": "Transpose",
+    "a3": "Paste",
+    "correct": "2",
+    "explanation": "Transpose引数をTrueに設定することで、行と列を入れ替えて貼り付けられます。"
+  },
+  {
+    "q": "値のコピーを行う際、クリップボードを経由せず最も高速に処理できる記述はどれか、【 1 】に入るものを答えなさい。<br>Sub FastCopy() 【 1 】 End Sub",
+    "a0": "Range(”A1”).Copy : Range(”B1”).Paste",
+    "a1": "Range(”B1”).Value = Range(”A1”).Value",
+    "a2": "Range(”A1”).Copy Destination:=Range(”B1”)",
+    "a3": "Range(”B1”).PasteSpecial xlPasteValues",
+    "correct": "1",
+    "explanation": "単に値だけをコピーしたい場合は、プロパティ（.Value）を直接代入するのが最も効率的です。"
+  },
+  {
+    "q": "セル範囲どうしの代入で値をコピーする際、注意すべき点として【 2 】に入る適切な内容を答えなさい。<br>Sub RangeCopy() ' セル範囲の場合、【 2 】を省略できない Range(”A1:B10”).Value = Range(”C1:D10”).Value End Sub",
+    "a0": ".Text",
+    "a1": ".Value",
+    "a2": ".Address",
+    "a3": ".Formula",
+    "correct": "1",
+    "explanation": "セル範囲からセル範囲へ値を代入する場合、右辺の**.Value**を省略すると正しくコピーされないため、必ず指定する必要があります。"
+  },
+  {
+    "q": "ブックを「保存せずに」閉じたい。このとき、【 1 】に入る適切な設定を答えなさい。<br>Sub CloseNoSave() ActiveWorkbook.Close SaveChanges:=【 1 】 End Sub",
+    "a0": "True",
+    "a1": "False",
+    "a2": "0",
+    "a3": "2と3の両方",
+    "correct": "3",
+    "explanation": "SaveChanges引数にFalse（または数値の0）を指定することで、変更を保存せずに閉じます。"
+  },
+  {
+    "q": "開いているブックの状態には影響を与えず、その時点の「コピー」を別ファイルとして保存したい。このとき、【 2 】に入る適切なメソッドを答えなさい。<br>Sub BackupBook() ThisWorkbook.【 2 】 Filename:=”backup.xlsx” End Sub",
+    "a0": "Save",
+    "a1": "SaveAs",
+    "a2": "SaveCopyAs",
+    "a3": "Copy",
+    "correct": "2",
+    "explanation": "SaveCopyAsは、現在のブックを開いたまま、その時点のコピーを別名で保存します。"
+  },
+  {
+    "q": "マクロが書かれているブックと同じフォルダ内の「data.xlsx」を開きたい。このとき、【 1 】に入る適切な記述を答えなさい。<br>Sub OpenMyData() Workbooks.Open Filename:=ThisWorkbook.Path & ”【 1 】” End Sub",
+    "a0": "data.xlsx",
+    "a1": "\\data.xlsx",
+    "a2": "/data.xlsx",
+    "a3": ":data.xlsx",
+    "correct": "1",
+    "explanation": "ThisWorkbook.Pathには末尾の「\\」が含まれないため、ファイル名の前に「****」を補う必要があります。"
+  },
+  {
+    "q": "Workbooks.Open メソッドを実行した際、正常に開けた場合に返される「戻り値」の内容として適切なものを【 2 】から選びなさい。<br>Sub GetReturn() ' 戻り値は 【 2 】 である End Sub",
+    "a0": "True/False (成否)",
+    "a1": "フルパス文字列",
+    "a2": "Workbookオブジェクト",
+    "a3": "ブックのインデックス",
+    "correct": "2",
+    "explanation": "Openメソッドは、開いたブックそのもののWorkbookオブジェクトを戻り値として返します。"
+  },
+  {
+    "q": "格子状の計算（例：百ます計算）を行う際、行と列を効率的に処理するための構造として適切なものを【 1 】から選びなさい。<br>Sub MultiLoop() ' 【 1 】を使用する End Sub",
+    "a0": "単一ループ",
+    "a1": "二重ループ",
+    "a2": "無限ループ",
+    "a3": "条件分岐のみ",
+    "correct": "1",
+    "explanation": "行方向と列方向の処理を組み合わせるには、ループを入れ子にする二重ループ構造が適しています。"
+  },
+  {
+    "q": "練習の指示で、Sheet1の内容をSheet2に移す際に「計算式ではなく値だけ」にするために推奨されるプロパティはどれか、【 2 】に入るものを答えなさい。<br>Sub OnlyValues() ' 【 2 】プロパティを利用する End Sub",
+    "a0": ".Text",
+    "a1": ".Formula",
+    "a2": ".Value",
+    "a3": ".Name",
+    "correct": "2",
+    "explanation": "計算結果の数値だけが必要な場合は、.Valueプロパティの代入や値の貼り付けを使用します。"
+  },
+  {
+    "q": "「20120203」という8桁の数値を「2012/2/3」という日付データに変換する際、基本となる手法を【 1 】から選びなさい。<br>Sub ToDate() ' 【 1 】で年・月・日を切り出す End Sub",
+    "a0": "数値計算",
+    "a1": "文字列操作関数",
+    "a2": "表示形式の変更のみ",
+    "a3": "変換は不可能",
+    "correct": "1",
+    "explanation": "数値の並びから特定の部分を取り出すには、LeftやMidなどの文字列操作関数が基本テクニックとなります。"
+  },
+  {
+    "q": "姓名の間にスペースがある文字列を分ける際、そのスペースが何文字目にあるかを特定するために使う関数はどれか、【 2 】に入るものを答えなさい。<br>Sub SplitName() Dim pos As Long pos = 【 2 】(”日本 太郎”, ” ”) End Sub",
+    "a0": "Replace",
+    "a1": "InStr",
+    "a2": "Len",
+    "a3": "Mid",
+    "correct": "1",
+    "explanation": "InStr関数を使用してスペースの位置を特定することで、文字列を切り分けるポイントが決まります。"
+  },
+  {
+    "q": "「既に特定の名前のシートが存在する場合がある」際に、マクロを繰り返し実行可能にするための簡便な対策を【 1 】から選びなさい。<br>Sub ResetSheet() ' 【 1 】 End Sub",
+    "a0": "名前を変えて作り直す",
+    "a1": "一旦削除してから作り直す",
+    "a2": "エラーを無視して進める",
+    "a3": "手動で削除させる",
+    "correct": "1",
+    "explanation": "既存のシートを一度削除してから新しく作成する方法が、コードの管理として簡単で確実です。"
+  },
+  {
+    "q": "複数のブック内の全てのシートを処理したい。このとき、【 2 】に入る適切なループの組み合わせを答えなさい。<br>Sub AllBookSheets() ' 【 2 】 End Sub",
+    "a0": "ブックを回すループの中にシートのループ",
+    "a1": "シートのループの中にブックのループ",
+    "a2": "ブックのループのみ",
+    "a3": "シートのループのみ",
+    "correct": "0",
+    "explanation": "複数のブックを順に開き、その中でそれぞれの全シートを調べるには、ブックのループ内にシートのループをネストさせる必要があります。"
   }
 ]
