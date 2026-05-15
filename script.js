@@ -1,10 +1,9 @@
 let quizData = [];
 let currentIdx = 0;
-let score = 0; // 正解数を数える
-let wrongQuestions = []; // 間違えた問題のインデックスを保存する
-let isReviewMode = false; // 「解き直しモード」かどうか
+let score = 0;
+let wrongQuestions = [];
+let isReviewMode = false;
 
-// 1. JSONファイルを読み込む
 fetch('questions.json')
     .then(response => response.json())
     .then(data => {
@@ -12,17 +11,25 @@ fetch('questions.json')
         showQuestion();
     })
     .catch(error => {
-        console.error("読み込みエラー:", error);
+        console.error("Error:", error);
         document.getElementById("question").textContent = "データの読み込みに失敗しましたわ。";
     });
 
-// 2. 問題を表示する
 function showQuestion() {
-    document.getElementById("explanation-container").style.display = "none";
+    const explanationContainer = document.getElementById("explanation-container");
+    explanationContainer.style.display = "none";
     
-    // 今解いている問題のデータを取得
-    const data = isReviewMode ? wrongQuestions[currentIdx] : quizData[currentIdx];
-    
+    // 現在のリスト（通常 or 解き直し）を判定
+    const currentList = isReviewMode ? wrongQuestions : quizData;
+    const total = currentList.length;
+    const data = currentList[currentIdx];
+
+    // 進捗表示の更新（バーと数字）
+    const progressPercent = ((currentIdx + 1) / total) * 100;
+    document.getElementById("progress-bar-fill").style.width = progressPercent + "%";
+    const modeText = isReviewMode ? "【解き直し】" : "";
+    document.getElementById("progress-text").textContent = `${modeText}${currentIdx + 1} / ${total}`;
+
     document.getElementById("question").innerHTML = data.q;
     const choicesDiv = document.getElementById("choices");
     choicesDiv.innerHTML = "";
@@ -36,37 +43,42 @@ function showQuestion() {
     });
 }
 
-// 3. 正解判定
 function checkAnswer(idx) {
-    const data = isReviewMode ? wrongQuestions[currentIdx] : quizData[currentIdx];
+    const currentList = isReviewMode ? wrongQuestions : quizData;
+    const data = currentList[currentIdx];
     const buttons = document.querySelectorAll("#choices button");
     const resultText = document.getElementById("result-text");
-    const expContainer = document.getElementById("explanation-container");
+    const expText = document.getElementById("explanation-text");
 
     buttons.forEach(btn => btn.disabled = true);
     const correctIdx = parseInt(data.correct);
 
     if (idx === correctIdx) {
-        if (!isReviewMode) score++; // 通常モードの時だけスコアを加算
+        if (!isReviewMode) score++;
         buttons[idx].style.backgroundColor = "#d4edda";
+        buttons[idx].style.borderColor = "#28a745";
+        buttons[idx].innerHTML = "⭕ " + buttons[idx].innerHTML;
         resultText.textContent = "⭕ 正解ですわ！";
         resultText.style.color = "#28a745";
     } else {
-        // 間違えた問題をリストに追加（まだリストに入っていない場合のみ）
         if (!isReviewMode && !wrongQuestions.includes(data)) {
             wrongQuestions.push(data);
         }
         buttons[idx].style.backgroundColor = "#f8d7da";
-        buttons[correctIdx].style.backgroundColor = "#e7f3ff"; // 正解を青くする
+        buttons[idx].style.borderColor = "#dc3545";
+        buttons[idx].innerHTML = "❌ " + buttons[idx].innerHTML;
+        
+        buttons[correctIdx].style.backgroundColor = "#e7f3ff";
+        buttons[correctIdx].style.borderColor = "#007bff";
         resultText.textContent = "❌ 不正解です...";
         resultText.style.color = "#dc3545";
     }
 
-    document.getElementById("explanation-text").innerHTML = data.explanation;
-    expContainer.style.display = "block";
+    // 解説を表示（JSONの列名が 'exp' か 'explanation' か確認してくださいね）
+    expText.innerHTML = data.exp || data.explanation || "解説はありません。";
+    document.getElementById("explanation-container").style.display = "block";
 }
 
-// 4. 次へボタン または リザルト表示
 function nextQuestion() {
     currentIdx++;
     const currentList = isReviewMode ? wrongQuestions : quizData;
@@ -78,39 +90,35 @@ function nextQuestion() {
     }
 }
 
-// 5. 結果発表（パーセント表示と解き直しボタン）
 function showResult() {
-    const total = isReviewMode ? wrongQuestions.length : quizData.length;
-    const percent = Math.round((score / quizData.length) * 100);
+    const totalQuestions = quizData.length;
+    const percent = Math.round((score / totalQuestions) * 100);
     
     let resultMsg = isReviewMode ? "解き直し終了ですわ！" : `全問終了！正解率は ${percent}% ですわ。`;
-    
     let html = `<h2>${resultMsg}</h2>`;
     
-    // 通常モード終了時で、間違えた問題がある場合
     if (!isReviewMode && wrongQuestions.length > 0) {
-        html += `<p>${quizData.length}問中、${wrongQuestions.length}問間違えました。</p>`;
-        html += `<button onclick="startReview()" style="background:#ffc107; color:black; width:100%; font-weight:bold;">間違えた問題だけ解き直す</button>`;
+        html += `<p>${totalQuestions}問中、${wrongQuestions.length}問間違えました。</p>`;
+        html += `<button onclick="startReview()" style="background:#ffc107; color:black; width:100%; font-weight:bold; padding:12px; border:none; border-radius:8px; cursor:pointer;">間違えた問題だけ解き直す</button>`;
+    } else if (isReviewMode) {
+        html += `<p>全問正解まであと少しですわ！</p>`;
     }
     
-    html += `<button onclick="location.reload()" style="margin-top:10px; width:100%;">最初からやり直す</button>`;
+    html += `<button onclick="location.reload()" style="margin-top:10px; width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; cursor:pointer;">最初からやり直す</button>`;
     
     document.getElementById("quiz-container").innerHTML = html;
 }
 
-// 6. 解き直しモード開始
 function startReview() {
     isReviewMode = true;
     currentIdx = 0;
-    // 画面を元のクイズ形式に戻す
+    // 画面をリセット
+    location.reload; // 簡易的なリセットとして。本来はDOM再構築ですが今回はこのまま
+    // ※以下、再描画の代わりにコンテナを戻す処理
     document.getElementById("quiz-container").innerHTML = `
-        <h2 id="question"></h2>
-        <div id="choices"></div>
-        <div id="explanation-container" style="display:none;">
-            <p id="result-text"></p>
-            <p id="explanation-text"></p>
-            <button id="next-btn" onclick="nextQuestion()">次の問題へ</button>
-        </div>
+        <div id="progress-container"><div id="progress-text"></div><div id="progress-bar-bg"><div id="progress-bar-fill"></div></div></div>
+        <h2 id="question"></h2><div id="choices"></div>
+        <div id="explanation-container"><p id="result-text"></p><p id="explanation-text"></p><button id="next-btn" onclick="nextQuestion()">次の問題へ</button></div>
     `;
     showQuestion();
 }
