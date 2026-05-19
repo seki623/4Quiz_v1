@@ -1,19 +1,24 @@
+let originalData = []; // 元の順番をずっと記憶しておく箱
 let quizData = [];
 let currentIdx = 0;
 let score = 0;
 let wrongQuestions = [];
 let isReviewMode = false;
+let isShuffled = false; // シャッフル中かどうかを判定する旗
 
 fetch('questions.json')
     .then(response => response.json())
     .then(data => {
+        originalData = [...data]; // 元のデータをコピーして保存
         quizData = data;
+        
+        // URLパラメータのチェック
         const urlParams = new URLSearchParams(window.location.search);
-        const startQ = parseInt(urlParams.get('q')); // URLに ?q=50 とかあれば取得
-
+        const startQ = parseInt(urlParams.get('q'));
         if (startQ && startQ > 0 && startQ <= quizData.length) {
-            currentIdx = startQ - 1; // 問題番号は0から始まるので1引く
+            currentIdx = startQ - 1;
         }
+
         showQuestion();
     })
     .catch(error => {
@@ -22,19 +27,30 @@ fetch('questions.json')
     });
 
 function showQuestion() {
-    const explanationContainer = document.getElementById("explanation-container");
-    explanationContainer.style.display = "none";
+    document.getElementById("explanation-container").style.display = "none";
     
-    // 現在のリスト（通常 or 解き直し）を判定
     const currentList = isReviewMode ? wrongQuestions : quizData;
     const total = currentList.length;
     const data = currentList[currentIdx];
 
-    // 進捗表示の更新（バーと数字）
+    // 進捗表示の更新
     const progressPercent = ((currentIdx + 1) / total) * 100;
     document.getElementById("progress-bar-fill").style.width = progressPercent + "%";
     const modeText = isReviewMode ? "【解き直し】" : "";
     document.getElementById("progress-text").textContent = `${modeText}${currentIdx + 1} / ${total}`;
+
+    // 下部コントロールボタンの表示制御
+    const ctrlPanel = document.getElementById("control-panel");
+    if (ctrlPanel) {
+        if (isReviewMode) {
+            ctrlPanel.style.display = "none";
+        } else {
+            ctrlPanel.style.display = "flex";
+            document.getElementById("shuffle-btn").style.display = isShuffled ? "none" : "block";
+            document.getElementById("reset-btn").style.display = isShuffled ? "block" : "none";
+            document.getElementById("skip-btn").disabled = (currentIdx + 10 >= total);
+        }
+    }
 
     document.getElementById("question").innerHTML = data.q;
     const choicesDiv = document.getElementById("choices");
@@ -55,6 +71,10 @@ function checkAnswer(idx) {
     const buttons = document.querySelectorAll("#choices button");
     const resultText = document.getElementById("result-text");
     const expText = document.getElementById("explanation-text");
+
+    // 回答中は下のボタンを隠す
+    const ctrlPanel = document.getElementById("control-panel");
+    if (ctrlPanel) ctrlPanel.style.display = "none";
 
     buttons.forEach(btn => btn.disabled = true);
     const correctIdx = parseInt(data.correct);
@@ -80,7 +100,6 @@ function checkAnswer(idx) {
         resultText.style.color = "#dc3545";
     }
 
-    // 解説を表示（JSONの列名が 'exp' か 'explanation' か確認してくださいね）
     expText.innerHTML = data.exp || data.explanation || "解説はありません。";
     document.getElementById("explanation-container").style.display = "block";
 }
@@ -96,6 +115,42 @@ function nextQuestion() {
     }
 }
 
+// ⏭️ 10問飛ばす機能
+function skipTenQuestions() {
+    const currentList = isReviewMode ? wrongQuestions : quizData;
+    if (currentIdx + 10 < currentList.length) {
+        currentIdx += 10;
+        showQuestion();
+    }
+}
+
+// 🔀 シャッフル機能
+function shuffleQuiz() {
+    if (confirm("問題をシャッフルして、1問目からスタートしますか？")) {
+        for (let i = quizData.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [quizData[i], quizData[j]] = [quizData[j], quizData[i]];
+        }
+        isShuffled = true;
+        currentIdx = 0;
+        score = 0;
+        wrongQuestions = [];
+        showQuestion();
+    }
+}
+
+// ↩️ 元の順番に戻す機能
+function resetOrder() {
+    if (confirm("元の順番に戻して、1問目からスタートしますか？")) {
+        quizData = [...originalData];
+        isShuffled = false;
+        currentIdx = 0;
+        score = 0;
+        wrongQuestions = [];
+        showQuestion();
+    }
+}
+
 function showResult() {
     const totalQuestions = quizData.length;
     const percent = Math.round((score / totalQuestions) * 100);
@@ -106,10 +161,9 @@ function showResult() {
     if (!isReviewMode && wrongQuestions.length > 0) {
         html += `<p>${totalQuestions}問中、${wrongQuestions.length}問間違えました。</p>`;
         html += `<button onclick="startReview()" style="background:#ffc107; color:black; width:100%; font-weight:bold; padding:12px; border:none; border-radius:8px; cursor:pointer;">間違えた問題だけ解き直す</button>`;
-    } else if (isReviewMode) {
-        html += `<p>全問正解まであと少しですわ！</p>`;
     }
     
+    // 【修正】「やり長す」を「やり直す」に正しく修正しました
     html += `<button onclick="location.reload()" style="margin-top:10px; width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; cursor:pointer;">最初からやり直す</button>`;
     
     document.getElementById("quiz-container").innerHTML = html;
@@ -118,13 +172,11 @@ function showResult() {
 function startReview() {
     isReviewMode = true;
     currentIdx = 0;
-    // 画面をリセット
-    location.reload; // 簡易的なリセットとして。本来はDOM再構築ですが今回はこのまま
-    // ※以下、再描画の代わりにコンテナを戻す処理
     document.getElementById("quiz-container").innerHTML = `
         <div id="progress-container"><div id="progress-text"></div><div id="progress-bar-bg"><div id="progress-bar-fill"></div></div></div>
         <h2 id="question"></h2><div id="choices"></div>
         <div id="explanation-container"><p id="result-text"></p><p id="explanation-text"></p><button id="next-btn" onclick="nextQuestion()">次の問題へ</button></div>
+        <div id="control-panel" style="display:none;"></div>
     `;
     showQuestion();
 }
