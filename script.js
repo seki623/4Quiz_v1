@@ -23,10 +23,10 @@ function showStartScreen() {
     const container = document.getElementById("quiz-container");
     container.innerHTML = `
         <h1 class="title-text">✨ クイズアプリ ✨</h1>
-        <p style="text-align:center; color:#555; margin-bottom:20px;">難易度を選択してくださいわ！</p>
+        <p style="text-align:center; color:#555; margin-bottom:20px;">難易度を選択してくださいね！</p>
         <div class="mode-select-box">
-            <button class="start-btn" id="easy-btn" onclick="loadQuiz('questions1.json', '易しい')">🟢 易しい</button>
-            <button class="start-btn" id="normal-btn" onclick="loadQuiz('questions2.json', '普通')">🟠 普通</button>
+            <button class="start-btn" id="easy-btn" onclick="loadQuiz('questions1.json', '易しい')">💛 易しい</button>
+            <button class="start-btn" id="normal-btn" onclick="loadQuiz('questions2.json', '普通')">💙 普通</button>
         </div>
     `;
 }
