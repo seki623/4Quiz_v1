@@ -8,6 +8,15 @@
         body { font-family: sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
         #quiz-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 90%; max-width: 500px; }
         
+        /* タイトル・開始画面 */
+        .title-text { text-align: center; color: #333; margin-bottom: 30px; font-size: 1.5rem; }
+        .mode-select-box { display: flex; flex-direction: column; gap: 15px; }
+        .start-btn { padding: 15px; font-size: 1.1rem; font-weight: bold; color: white; border: none; border-radius: 10px; cursor: pointer; text-align: center; transition: background 0.2s; }
+        #easy-btn { background: #28a745; }
+        #easy-btn:hover { background: #218838; }
+        #normal-btn { background: #fd7e14; }
+        #normal-btn:hover { background: #e0660d; }
+
         /* 進捗表示エリア */
         #progress-container { margin-bottom: 20px; }
         #progress-text { font-size: 0.85rem; color: #666; text-align: right; margin-bottom: 5px; }
@@ -23,39 +32,19 @@
         #result-text { font-weight: bold; margin-bottom: 10px; }
         #next-btn { width: 100%; margin-top: 15px; background: #007bff; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; }
 
-        /* コントロールボタンのエリア（一番下に配置するためのスタイル） */
-        #control-panel { display: flex; gap: 10px; margin-top: 25px; padding-top: 15px; border-top: 1px dashed #ddd; justify-content: space-between; }
-        .ctrl-btn { padding: 8px 12px; font-size: 0.8rem; background: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; flex: 1; text-align: center; }
+        /* コントロールボタンのエリア */
+        #control-panel { display: flex; gap: 10px; margin-top: 25px; padding-top: 15px; border-top: 1px dashed #ddd; justify-content: space-between; flex-wrap: wrap; }
+        .ctrl-btn { padding: 8px 12px; font-size: 0.8rem; background: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; flex: 1; text-align: center; min-width: 80px; }
         .ctrl-btn:hover { background: #5a6268; }
-        .ctrl-btn:disabled { background: #ccc; cursor: not-allowed; display: none; } /* 無効時は非表示にしてスッキリ */
+        .ctrl-btn:disabled { background: #ccc; cursor: not-allowed; display: none; }
+        #quit-btn { background: #dc3545; } /* 途中終了は赤色に */
+        #quit-btn:hover { background: #bd2130; }
     </style>
 </head>
 <body>
 
 <div id="quiz-container">
-    <!-- 進捗バーエリア -->
-    <div id="progress-container">
-        <div id="progress-text">0 / 0</div>
-        <div id="progress-bar-bg"><div id="progress-bar-fill"></div></div>
-    </div>
-
-    <!-- クイズ本体 -->
-    <h2 id="question">読み込み中...</h2>
-    <div id="choices"></div>
-
-    <!-- 解説エリア -->
-    <div id="explanation-container">
-        <p id="result-text"></p>
-        <p id="explanation-text"></p>
-        <button id="next-btn" onclick="nextQuestion()">次の問題へ</button>
-    </div>
-
-    <!-- コントロールパネル（一番下に移動） -->
-    <div id="control-panel">
-        <button class="ctrl-btn" id="shuffle-btn" onclick="shuffleQuiz()">🔀 シャッフル</button>
-        <button class="ctrl-btn" id="reset-btn" onclick="resetOrder()" style="display:none;">↩️ 元の順に戻す</button>
-        <button class="ctrl-btn" id="skip-btn" onclick="skipTenQuestions()">⏭️ 10問飛ばす</button>
-    </div>
+    <!-- 最初はここに開始画面かクイズ画面がJavaScriptで入ります -->
 </div>
 
 <script src="script.js"></script>

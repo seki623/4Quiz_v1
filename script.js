@@ -1,30 +1,83 @@
-let originalData = []; // 元の順番をずっと記憶しておく箱
+let originalData = []; 
 let quizData = [];
 let currentIdx = 0;
 let score = 0;
 let wrongQuestions = [];
 let isReviewMode = false;
-let isShuffled = false; // シャッフル中かどうかを判定する旗
+let isShuffled = false;
+let currentDifficulty = ""; // 現在の難易度（「易しい」か「普通」）
 
-fetch('questions.json')
-    .then(response => response.json())
-    .then(data => {
-        originalData = [...data]; // 元のデータをコピーして保存
-        quizData = data;
-        
-        // URLパラメータのチェック
-        const urlParams = new URLSearchParams(window.location.search);
-        const startQ = parseInt(urlParams.get('q'));
-        if (startQ && startQ > 0 && startQ <= quizData.length) {
-            currentIdx = startQ - 1;
-        }
+// アプリ起動時にまず開始画面を表示する
+window.onload = function() {
+    showStartScreen();
+};
 
-        showQuestion();
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        document.getElementById("question").textContent = "データの読み込みに失敗しましたわ。";
-    });
+// 🏠 開始画面（難易度選択）を表示する関数
+function showStartScreen() {
+    isReviewMode = false;
+    isShuffled = false;
+    currentIdx = 0;
+    score = 0;
+    wrongQuestions = [];
+    
+    const container = document.getElementById("quiz-container");
+    container.innerHTML = `
+        <h1 class="title-text">✨ クイズアプリ ✨</h1>
+        <p style="text-align:center; color:#555; margin-bottom:20px;">難易度を選択してくださいわ！</p>
+        <div class="mode-select-box">
+            <button class="start-btn" id="easy-btn" onclick="loadQuiz('questions1.json', '易しい')">🟢 易しい</button>
+            <button class="start-btn" id="normal-btn" onclick="loadQuiz('questions2.json', '普通')">🟠 普通</button>
+        </div>
+    `;
+}
+
+// 📂 選択された難易度のファイルを読み込む関数
+function loadQuiz(fileName, difficultyLabel) {
+    currentDifficulty = difficultyLabel;
+    
+    fetch(fileName)
+        .then(response => response.json())
+        .then(data => {
+            originalData = [...data];
+            quizData = data;
+            
+            // クイズ画面のHTMLの骨組みをセット
+            setupQuizLayout();
+            showQuestion();
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert(`${difficultyLabel}問題のデータ（${fileName}）が見つからないか、中身が壊れていますわ。`);
+            showStartScreen();
+        });
+}
+
+// 🛠️ クイズ画面のレイアウトを構築する関数
+function setupQuizLayout() {
+    const container = document.getElementById("quiz-container");
+    container.innerHTML = `
+        <div id="progress-container">
+            <div id="progress-text">0 / 0</div>
+            <div id="progress-bar-bg"><div id="progress-bar-fill"></div></div>
+        </div>
+
+        <h2 id="question">読み込み中...</h2>
+        <div id="choices"></div>
+
+        <div id="explanation-container">
+            <p id="result-text"></p>
+            <p id="explanation-text"></p>
+            <button id="next-btn" onclick="nextQuestion()">次の問題へ</button>
+        </div>
+
+        <div id="control-panel">
+            <button class="ctrl-btn" id="shuffle-btn" onclick="shuffleQuiz()">🔀 シャッフル</button>
+            <button class="ctrl-btn" id="reset-btn" onclick="resetOrder()" style="display:none;">↩️ 元の順に戻す</button>
+            <button class="ctrl-btn" id="skip-btn" onclick="skipTenQuestions()">⏭️ 10問飛ばす</button>
+            <button class="ctrl-btn" id="quit-btn" onclick="quitQuiz()">🚪 途中終了</button>
+        </div>
+    `;
+}
 
 function showQuestion() {
     document.getElementById("explanation-container").style.display = "none";
@@ -33,21 +86,27 @@ function showQuestion() {
     const total = currentList.length;
     const data = currentList[currentIdx];
 
-    // 進捗表示の更新
+    // 進捗表示の更新（難易度名も表示します）
     const progressPercent = ((currentIdx + 1) / total) * 100;
     document.getElementById("progress-bar-fill").style.width = progressPercent + "%";
-    const modeText = isReviewMode ? "【解き直し】" : "";
-    document.getElementById("progress-text").textContent = `${modeText}${currentIdx + 1} / ${total}`;
+    
+    let modeText = `【${currentDifficulty}】`;
+    if (isReviewMode) modeText = "【解き直し】";
+    document.getElementById("progress-text").textContent = `${modeText} ${currentIdx + 1} / ${total}`;
 
     // 下部コントロールボタンの表示制御
     const ctrlPanel = document.getElementById("control-panel");
     if (ctrlPanel) {
         if (isReviewMode) {
-            ctrlPanel.style.display = "none";
+            // 解き直し中は途中終了だけ残す
+            document.getElementById("shuffle-btn").style.display = "none";
+            document.getElementById("reset-btn").style.display = "none";
+            document.getElementById("skip-btn").style.display = "none";
         } else {
-            ctrlPanel.style.display = "flex";
+            document.getElementById("control-panel").style.display = "flex";
             document.getElementById("shuffle-btn").style.display = isShuffled ? "none" : "block";
             document.getElementById("reset-btn").style.display = isShuffled ? "block" : "none";
+            document.getElementById("skip-btn").style.display = "block";
             document.getElementById("skip-btn").disabled = (currentIdx + 10 >= total);
         }
     }
@@ -151,6 +210,13 @@ function resetOrder() {
     }
 }
 
+// 🚪 途中終了機能（追加）
+function quitQuiz() {
+    if (confirm("クイズを途中で終了して、難易度選択画面に戻りますか？（スコアはリセットされます）")) {
+        showStartScreen();
+    }
+}
+
 function showResult() {
     const totalQuestions = quizData.length;
     const percent = Math.round((score / totalQuestions) * 100);
@@ -163,8 +229,7 @@ function showResult() {
         html += `<button onclick="startReview()" style="background:#ffc107; color:black; width:100%; font-weight:bold; padding:12px; border:none; border-radius:8px; cursor:pointer;">間違えた問題だけ解き直す</button>`;
     }
     
-    // 【修正】「やり長す」を「やり直す」に正しく修正しました
-    html += `<button onclick="location.reload()" style="margin-top:10px; width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; cursor:pointer;">最初からやり直す</button>`;
+    html += `<button onclick="showStartScreen()" style="margin-top:10px; width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; cursor:pointer;">難易度選択に戻る</button>`;
     
     document.getElementById("quiz-container").innerHTML = html;
 }
@@ -172,11 +237,6 @@ function showResult() {
 function startReview() {
     isReviewMode = true;
     currentIdx = 0;
-    document.getElementById("quiz-container").innerHTML = `
-        <div id="progress-container"><div id="progress-text"></div><div id="progress-bar-bg"><div id="progress-bar-fill"></div></div></div>
-        <h2 id="question"></h2><div id="choices"></div>
-        <div id="explanation-container"><p id="result-text"></p><p id="explanation-text"></p><button id="next-btn" onclick="nextQuestion()">次の問題へ</button></div>
-        <div id="control-panel" style="display:none;"></div>
-    `;
+    setupQuizLayout();
     showQuestion();
 }
