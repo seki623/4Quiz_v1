@@ -1,230 +1,164 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trade Log</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4択クイズ</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="tabs">
-        <button id="btn-tab-record" class="tab-btn active" onclick="switchTab('record')">記録</button>
-        <button id="btn-tab-list" class="tab-btn" onclick="switchTab('list')">一覧</button>
-        <button id="btn-tab-stats" class="tab-btn" onclick="switchTab('stats')">統計</button>
+  <header>
+    <div class="logo">Quiz<span>Gen</span></div>
+    <div class="header-info" id="headerInfo"></div>
+  </header>
+
+  <div id="loadingMsg">
+    <div class="spinner"></div>
+    問題を読み込み中…
+  </div>
+
+  <div id="setupScreen" class="screen">
+    <div class="setup-title">
+      クイズの設定
+      <small id="totalBadge"></small>
     </div>
 
-    <div id="tab-record" class="container active">
-        <h1 id="formTitle">📊 新規トレード記録</h1>
-        <input type="hidden" id="editingId" value="">
-        
-        <div class="flex-row">
-            <div class="form-group">
-                <label>日にち</label>
-                <input type="date" id="tradeDate" onchange="updateDstDefault()">
-            </div>
-            <div class="form-group">
-                <label>日本時間 (JST)</label>
-                <input type="text" id="tradeTime" placeholder="時間または下の変換を使用" oninput="autoCalculateAllMetrics()">
-            </div>
-        </div>
+    <div class="stats-bar" id="statsBadge"></div>
 
-        <div class="form-group convert-box">
-            <label style="margin-bottom:4px;">⏰ 海外時間(時差-6時間)を変換</label>
-            <div class="flex-row">
-                <input type="text" id="foreignTimeInput" placeholder="例: 7:41" autocomplete="off">
-                <button type="button" class="action-btn" onclick="runTimeConverter()" style="margin:0; width:auto; padding:0 15px;">変換</button>
-            </div>
-            <label class="switch-label">
-                <input type="checkbox" id="isSummerTime">夏時間
-            </label>
-        </div>
-
-        <div class="form-group">
-            <label>市場</label>
-            <div class="btn-group" id="marketGroup">
-                <button type="button" class="select-btn" data-type="market" data-val="アジア">アジア</button>
-                <button type="button" class="select-btn" data-type="market" data-val="ロンドン">ロンドン</button>
-                <button type="button" class="select-btn" data-type="market" data-val="ニューヨーク">ニューヨーク</button>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>通貨ペア / 銘柄</label>
-            <div class="btn-group" id="pairGroup">
-                <button type="button" class="select-btn" data-type="pair" data-val="XAUUSD">XAUUSD</button>
-                <button type="button" class="select-btn" data-type="pair" data-val="BTCUSD">BTCUSD</button>
-                <button type="button" class="select-btn" data-type="pair" data-val="OIL">OIL</button>
-                <button type="button" class="select-btn" data-type="pair" data-val="USDJPY">USDJPY</button>
-                <button type="button" class="select-btn" data-type="pair" data-val="EURUSD">EURUSD</button>
-                <button type="button" class="select-btn" data-type="pair" data-val="AUDJPY">AUDJPY</button>
-                <button type="button" class="select-btn" data-type="pair" data-val="AUDUSD">AUDUSD</button>
-                <button type="button" class="select-btn" data-type="pair" data-val="EURJPY">EURJPY</button>
-                <button type="button" class="select-btn" data-type="pair" data-val="その他">その他</button>
-            </div>
-            <input type="text" id="customPairInput" placeholder="通貨ペアを手入力してください">
-        </div>
-
-        <div class="flex-row">
-            <div class="form-group">
-                <label>月足</label>
-                <div class="btn-group" id="monthlyGroup">
-                    <button type="button" class="select-btn" data-type="monthly" data-val="陽線">陽線</button>
-                    <button type="button" class="select-btn" data-type="monthly" data-val="陰線">陰線</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>週足</label>
-                <div class="btn-group" id="weeklyGroup">
-                    <button type="button" class="select-btn" data-type="weekly" data-val="陽線">陽線</button>
-                    <button type="button" class="select-btn" data-type="weekly" data-val="陰線">陰線</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>日足</label>
-                <div class="btn-group" id="dailyGroup">
-                    <button type="button" class="select-btn" data-type="daily" data-val="陽線">陽線</button>
-                    <button type="button" class="select-btn" data-type="daily" data-val="陰線">陰線</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>目線</label>
-            <div class="btn-group" id="biasGroup">
-                <button type="button" class="select-btn" data-type="bias" data-val="ロング">ロング</button>
-                <button type="button" class="select-btn" data-type="bias" data-val="ショート">ショート</button>
-                <button type="button" class="select-btn" data-type="bias" data-val="レンジ">レンジ</button>
-            </div>
-        </div>
-
-        <div class="flex-row">
-            <div class="form-group">
-                <label>売買</label>
-                <div class="btn-group" id="sideGroup">
-                    <button type="button" class="select-btn" data-type="side" data-val="Long">ロング</button>
-                    <button type="button" class="select-btn" data-type="side" data-val="Short">ショート</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>結果</label>
-                <div class="btn-group" id="resultGroup">
-                    <button type="button" class="select-btn" data-type="result" data-val="勝ち">勝ち</button>
-                    <button type="button" class="select-btn" data-type="result" data-val="負け">負け</button>
-                    <button type="button" class="select-btn" data-type="result" data-val="建値">建値</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex-row">
-            <div class="form-group">
-                <label>Open 価格</label>
-                <input type="number" id="openPriceInput" step="any" placeholder="例: 3000.00" oninput="autoCalculateAllMetrics()">
-            </div>
-            <div class="form-group">
-                <label>Close 価格</label>
-                <input type="number" id="closePriceInput" step="any" placeholder="例: 3010.50" oninput="autoCalculateAllMetrics()">
-            </div>
-        </div>
-        <div class="flex-row">
-            <div class="form-group">
-                <label>TP 価格</label>
-                <input type="number" id="tpPriceInput" step="any" placeholder="例: 3050.00" oninput="autoCalculateAllMetrics()">
-            </div>
-            <div class="form-group">
-                <label>SL 価格</label>
-                <input type="number" id="slPriceInput" step="any" placeholder="例: 2980.00" oninput="autoCalculateAllMetrics()">
-            </div>
-        </div>
-
-        <div class="rr-indicator" id="liveRrBox">
-            <span>想定 RR 1 : --</span>
-            <span>実際 RR 1 : --</span>
-        </div>
-
-        <div class="flex-row">
-            <div class="form-group">
-                <label>ロット数</label>
-                <input type="number" id="lotInput" step="any" placeholder="0.1" oninput="autoCalculateAllMetrics()">
-            </div>
-            <div class="form-group">
-                <label>獲得PIPS</label>
-                <input type="number" id="pipsInput" step="any" placeholder="自動計算されます" oninput="autoCalculateAllMetrics()">
-            </div>
-            <div class="form-group">
-                <label>損益額 (USD) (自動計算)</label>
-                <input type="number" id="pnlInput" step="any" placeholder="自動計算されます">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>感情</label>
-            <div class="btn-group" id="emotionGroup">
-                <button type="button" class="select-btn" data-type="emotion" data-val="冷静">冷静</button>
-                <button type="button" class="select-btn" data-type="emotion" data-val="焦り">焦り</button>
-                <button type="button" class="select-btn" data-type="emotion" data-val="不安">不安</button>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>メモ（根拠や反省点）</label>
-            <textarea id="memoInput" placeholder="エントリーした環境認識や、トレード後の反省etc"></textarea>
-        </div>
-
-        <button type="button" class="action-btn" id="submitBtn" onclick="saveTradeLog()">このトレードを保存する</button>
+    <div class="setup-section">
+      <div class="setup-label">問題数</div>
+      <div class="count-grid" id="countGrid"></div>
     </div>
 
-    <div id="tab-list" class="container">
-        <div class="list-header">
-            <div class="count-text" id="totalCountText">0 件の記録</div>
-            <button class="nav-trigger-btn" onclick="clearFormAndGoToRecord()">＋ 新規記録</button>
-        </div>
-
-        <div id="cardContainer"></div>
-
-        <div class="backup-section">
-            <p style="font-size:13px; color:var(--text-muted); margin-bottom:10px;">データのバックアップ / 出力選択</p>
-            <button class="backup-btn" onclick="exportToCSV()">Excel用にCSVでダウンロード</button>
-            <button class="backup-btn" onclick="exportToText()">引っ越し用にテキストをコピー</button>
-            <button class="backup-btn" onclick="importFromText()" style="background-color:#2c3e50;">データをテキストから復元</button>
-            <br>
-            <button onclick="clearAllData()" style="background:none; border:none; color:var(--color-lose); font-size:12px; margin-top:15px; cursor:pointer;">全てのデータを初期化する</button>
-        </div>
+    <div class="setup-section">
+      <div class="setup-label">オプション</div>
+      <div class="toggle-row">
+        <label class="toggle-item">
+          <div class="toggle-label">
+            制限時間を計測する
+            <small>タイマーによる時間計測を行います</small>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="useTimer" checked>
+            <div class="toggle-track"></div>
+          </div>
+        </label>
+        <label class="toggle-item">
+          <div class="toggle-label">
+            問題をシャッフル
+            <small>出題順をランダムにする</small>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="shuffleQ" checked>
+            <div class="toggle-track"></div>
+          </div>
+        </label>
+        <label class="toggle-item">
+          <div class="toggle-label">
+            選択肢をシャッフル
+            <small>①②③④の順をランダムにする</small>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="shuffleC" checked onchange="UI.handleShuffleCChange()">
+            <div class="toggle-track"></div>
+          </div>
+        </label>
+        <label class="toggle-item">
+          <div class="toggle-label">
+            解説を表示する
+            <small>回答後に解説を表示する</small>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="showExp" checked>
+            <div class="toggle-track"></div>
+          </div>
+        </label>
+      </div>
     </div>
 
-    <div id="tab-stats" class="container">
-        <h1>📈 トレード統計分析</h1>
-        
-        <div class="stat-grid">
-            <div class="stat-card">
-                <div style="font-size:13px; color:var(--text-muted);">総トレード数</div>
-                <div class="stat-val" id="statTotalTrades">0</div>
-            </div>
-            <div class="stat-card">
-                <div style="font-size:13px; color:var(--text-muted);">総合勝率</div>
-                <div class="stat-val" id="statWinRate" style="color:var(--color-win)">0%</div>
-                <div style="font-size:11px; color:var(--text-muted);" id="statWLD">0勝 0敗 0分</div>
-            </div>
-            <div class="stat-card">
-                <div style="font-size:13px; color:var(--text-muted);">総損益額</div>
-                <div class="stat-val" id="statTotalPnl">0 USD</div>
-            </div>
-            <div class="stat-card">
-                <div style="font-size:13px; color:var(--text-muted);">総獲得PIPS</div>
-                <div class="stat-val" id="statTotalPips">0 pips</div>
-            </div>
+    <div class="setup-section">
+      <div class="setup-label">個別問題選択</div>
+      <button class="btn btn-ghost" id="toggleListBtn" onclick="UI.toggleQuestionList()" style="width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+        <span>問題一覧から選んで解く</span>
+        <span id="listArrow">▼</span>
+      </button>
+      
+      <div class="select-list-container" id="selectListContainer">
+        <div style="padding: 12px; display: flex; gap: 8px; align-items: center; border-bottom: 1px solid var(--border); background: var(--surface2); font-size: 13px;">
+          <input type="number" id="rangeStart" placeholder="開始" style="width: 60px; padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: #fff; text-align: center;">
+          <span>問目 から</span>
+          <input type="number" id="rangeEnd" placeholder="終了" style="width: 60px; padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: #fff; text-align: center;">
+          <span>問目 まで</span>
+          <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px; margin-left: auto;" onclick="UI.selectRange()">選択</button>
         </div>
 
-        <h2>😊 感情トレード率</h2>
-        <div class="stat-list" id="emotionStatList"></div>
+        <div style="padding: 12px; border-bottom: 1px solid var(--border); background: var(--surface2);">
+          <button class="btn btn-primary" style="width: 100%; padding: 10px;" onclick="UI.startSelectedQuestions()">
+            選択した問題を解く (計<span id="selectedCountBadge">0</span>問)
+          </button>
+        </div>
 
-        <h2>💱 通貨ペア別成績</h2>
-        <div class="stat-list" id="pairStatList"></div>
+        <div class="select-list" id="individualQList"></div>
+      </div>
+    </div>
     </div>
 
-    <script src="js/ui.js"></script>
-    <script src="js/record.js"></script>
-    <script src="js/list.js"></script>
-    <script src="js/stats.js"></script>
+    <button class="btn btn-primary" id="startBtn" onclick="UI.startQuiz()">クイズを開始する →</button>
+  </div>
+
+  <div id="quizScreen" class="screen">
+    <div class="quiz-topbar">
+      <div class="q-counter">問題 <strong id="qNum">1</strong> / <span id="qTotal">10</span></div>
+      <div class="timer" id="timerEl">0:00</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="correct-track" id="correctTrack"></div>
+
+    <div class="question-box" id="questionText"></div>
+    <div class="choices" id="choicesArea"></div>
+
+    <div class="explanation" id="explanation">
+      <div class="ex-tag">解説</div>
+      <div id="explanationText"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" id="backBtn" onclick="UI.goBack()">← 前へ</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="UI.goNext()" style="display:none">次へ →</button>
+      <button class="btn btn-warn" id="abortBtn" onclick="UI.abortQuiz()" style="margin-left: auto;">途中終了</button>
+    </div>
+  </div>
+
+  <div id="resultScreen" class="screen">
+    <div class="result-hero">
+      <div class="score-ring">
+        <div class="score-big" id="finalScore"></div>
+        <div class="score-of">正解</div>
+      </div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-elapsed" id="resultElapsed"></div>
+    </div>
+
+    <div class="result-stats">
+      <div class="stat-card"><div class="sv" id="statCorrect"></div><div class="sl">正解</div></div>
+      <div class="stat-card"><div class="sv" id="statWrong"></div><div class="sl">不正解</div></div>
+      <div class="stat-card"><div class="sv" id="statPct"></div><div class="sl">正答率</div></div>
+    </div>
+
+    <div class="review-list">
+      <div class="review-head">問題別結果</div>
+      <div id="reviewItems"></div>
+    </div>
+
+    <div class="result-btns">
+      <button class="btn btn-primary" id="retrySameBtn" onclick="UI.restartSameSettings()">同じ設定で再挑戦</button>
+      <button class="btn btn-accent" id="retryWrongBtn" onclick="UI.restartWrongOnly()">間違えた問題に再挑戦</button>
+      <button class="btn btn-ghost" onclick="UI.goSetup()">設定に戻る</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="ui.js"></script>
 </body>
 </html>
